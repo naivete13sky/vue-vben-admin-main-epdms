@@ -1,7 +1,8 @@
 export default {
   job: {
     job: '主料号管理',
-    basic: '基础组件cc',
+    test: 'test基础组件',
+    basic: '基础组件',
     transition: '动画组件',
     countTo: '数字动画',
 
