@@ -9,7 +9,7 @@ const comp: AppRouteModule = {
   component: LAYOUT,
   redirect: '/job/basic',
   meta: {
-    orderNo: 30,
+    orderNo: 11,
     icon: 'ion:layers-outline',
     title: t('routes.job.job.job'),
   },
