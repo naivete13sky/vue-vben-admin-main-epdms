@@ -16,6 +16,14 @@ const comp: AppRouteModule = {
 
   children: [
     {
+      path: 'job_manage',
+      name: 'JobManage',
+      component: () => import('/@/views/demo/job/job_manage/basic.vue'),
+      meta: {
+        title: t('routes.job.job.job_manage'),
+      },
+    },
+    {
       path: 'test',
       name: 'TestBasicDemo',
       component: () => import('/@/views/demo/job/test/index.vue'),
