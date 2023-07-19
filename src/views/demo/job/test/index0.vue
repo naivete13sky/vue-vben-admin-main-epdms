@@ -3,13 +3,13 @@
   <div class="hello">
     <h1>Django + Vue.js Example</h1>
     <form @submit.prevent="addExample">
-      <input v-model="job_name" type="text" placeholder="job_name" required />
-      <input v-model="remark" type="text" placeholder="remark" required />
+      <input v-model="name" type="text" placeholder="Name" required />
+      <input v-model="description" type="text" placeholder="Description" required />
       <button type="submit">Add Example</button>
     </form>
     <ul>
-      <li v-for="job in examples" :key="job.id">
-        <strong>{{ job.job_name }}:</strong> {{ job.remark }}
+      <li v-for="example in examples" :key="example.id">
+        <strong>{{ example.name }}:</strong> {{ example.description }}
       </li>
     </ul>
   </div>
@@ -128,34 +128,34 @@
     components: { PageWrapper, ACard: Card, ARow: Row, ACol: Col },
     data() {
     return {
-      job_name: '',
-      remark: '',
+      name: '',
+      description: '',
       examples: [],
     };
   },
   methods: {
     async addExample() {
-      const response = await fetch('http://localhost:8000/job/api/notes/', {
+      const response = await fetch('http://localhost:8000/backend/api/notes/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: this.job_name,
-          description: this.remark,
+          name: this.name,
+          description: this.description,
         }),
       });
 
       if (response.ok) {
         const example = await response.json();
         this.examples.push(example);
-        this.job_name = '';
-        this.remark = '';
+        this.name = '';
+        this.description = '';
       }
     },
   },
   async mounted() {
-    const response = await fetch('http://localhost:8000/job/api/notes/');
+    const response = await fetch('http://localhost:8000/backend/api/notes/');
     if (response.ok) {
       this.examples = await response.json();
     }
