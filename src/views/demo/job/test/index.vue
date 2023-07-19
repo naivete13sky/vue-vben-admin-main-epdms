@@ -9,7 +9,7 @@
     </form>
     <ul>
       <li v-for="job in examples" :key="job.id">
-        <strong>{{ job.job_name }}:</strong> {{ job.remark }}
+        <strong>{{ job.id }}|{{ job.job_name }}|</strong> {{ job.remark }}
       </li>
     </ul>
   </div>
