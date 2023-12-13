@@ -74,7 +74,7 @@
       }
       return {
         columns: getBasicColumnscc(),
-        data: getBasicDatacc(),
+        // data: getBasicDatacc(),
         canResize,
         loading,
         striped,
@@ -125,5 +125,3 @@
 
 
 </script>
-
-
