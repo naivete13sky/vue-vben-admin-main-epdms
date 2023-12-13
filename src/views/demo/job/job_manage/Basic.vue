@@ -1,37 +1,13 @@
 <template>
   <div class="p-4">
-    <BasicTable @register="registerTable">
-      <template #bodyCell="{ column, record, text }">
-        <template v-if="column.key === 'id'"> ID: {{ record.id }} </template>
-        <template v-else-if="column.key === 'no'">
-          <Tag color="green">
-            {{ record.no }}
-          </Tag>
-        </template>
-        <template v-else-if="column.key === 'avatar'">
-          <Avatar :size="60" :src="record.avatar" />
-        </template>
-        <template v-else-if="column.key === 'imgArr'">
-          <TableImg :size="60" :simpleShow="true" :imgList="text" />
-        </template>
-        <template v-else-if="column.key === 'imgs'">
-          <TableImg :size="60" :imgList="text" />
-        </template>
-
-        <template v-else-if="column.key === 'category'">
-          <Tag color="green">
-            {{ record.no }}
-          </Tag>
-        </template>
-      </template>
+    <BasicTable :dataSource="tableData" @register="registerTable">
     </BasicTable>
   </div>
 </template>
+
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { BasicTable, useTable, BasicColumn, TableImg } from '/@/components/Table';
-  import { Tag, Avatar } from 'ant-design-vue';
-  import { demoListApi } from '/@/api/demo/table';
+  import { defineComponent, ref, onMounted } from 'vue';
+  import { BasicTable, useTable, BasicColumn } from '/@/components/Table';
 
   const columns: BasicColumn[] = [
     {
@@ -64,7 +40,6 @@
         { text: 'draft', value: 'draft' },
       ],
     },
-
     {
       title: 'publish',
       width: 150,
@@ -78,21 +53,43 @@
       dataIndex: 'remark',
     },
   ];
+
   export default defineComponent({
-    components: { BasicTable, TableImg, Tag, Avatar },
+    components: { BasicTable },
     setup() {
+      const tableData = ref([]);
       const [registerTable] = useTable({
         title: '自定义列内容',
         titleHelpMessage: '表格中所有头像、图片均为mock生成，仅用于演示图片占位',
-        api: demoListApi,
         columns: columns,
         bordered: true,
         showTableSetting: true,
+        dataSource: tableData,
+      });
+
+      // 使用接口获取数据
+      onMounted(async () => {
+        try {
+          const response = await fetch('http://10.97.80.119:8000/job/api/notes/');
+          if (response.ok) {
+            const data = await response.json();
+            tableData.value = data;
+          } else {
+            console.error('Failed to fetch data from the API');
+          }
+        } catch (error) {
+          console.error('Error while fetching data:', error);
+        }
       });
 
       return {
         registerTable,
+        tableData,
       };
     },
   });
 </script>
+
+<style scoped>
+  /* 你的样式可以放在这里 */
+</style>
