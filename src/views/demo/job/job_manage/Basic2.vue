@@ -1,4 +1,6 @@
+// MyComponent.vue
 <template>
+
   <div>
     <table>
       <thead>
@@ -27,6 +29,7 @@
           <!-- 添加更多字段 -->
         </tr>
       </tbody>
+
       <!-- 分页导航 -->
       <div class="pagination">
         <button @click="goToPage(1)" :disabled="currentPage === 1">首页</button>
@@ -37,42 +40,69 @@
       </div>
     </table>
   </div>
+  <!-- 显示列表内容 -->
+  <div v-for="item in items" :key="item.id">{{ item }}</div>
+  
+  <!-- 分页控制器 -->
+  <button @click="prevPage">上一页</button>
+  <span>当前第 {{ currentPage }} 页 / 共 {{ totalPages }} 页</span>
+  <button @click="nextPage">下一页</button>
+
 
 </template>
-
+ 
 <script>
 import axios from 'axios';
-
+ 
 export default {
   data() {
     return {
-      items: [],
-      currentPage: 1,
-      totalPages: 1,
-      pageSize: 10,
+      items: [],          // 存放获取到的数据项
+      pageSize: 10,       // 每页显示的条目数量
+      currentPage: 1,     // 当前页码
+      totalItems: null,   // 总记录数
+      totalPages: null,   // 总页数
     };
   },
-  created() {
-    this.fetchData();
-  },
+ 
   methods: {
-    fetchData() {
-      const url = `http://10.97.80.119:8000/job/api/jobs/?page=${this.currentPage}&page_size=${this.pageSize}`;
-      axios.get(url)
-        .then(response => {
-          this.items = response.data.results;
-          this.totalPages = Math.ceil(response.data.count / this.pageSize);
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-        });
+    fetchData(page) {
+      const url = `http://10.97.80.119:8000/job/api/jobs/?limit=${this.pageSize}&offset=${(page - 1) * this.pageSize}`;
+      axios.get(url).then((response) => {
+        this.items = response.data['results'];
+        this.totalItems = response.data['count'];
+        this.calculateTotalPages();
+      });
     },
-    goToPage(page) {
-      if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
-        this.currentPage = page;
-        this.fetchData();
+    
+    calculateTotalPages() {
+      if (this.totalItems % this.pageSize === 0) {
+        this.totalPages = Math.floor(this.totalItems / this.pageSize);
+      } else {
+        this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+      }
+    },
+    
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.fetchData(--this.currentPage);
+      }
+    },
+    
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.fetchData(++this.currentPage);
       }
     },
   },
+ 
+  mounted() {
+    this.fetchData(this.currentPage);
+  },
 };
+
+
+
+
+
 </script>
