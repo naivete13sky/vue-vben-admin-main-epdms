@@ -1,5 +1,5 @@
 <template>
-   <div class="p-4">
+  <div class="p-4">
     <BasicTable
       title="基础示例"
       titleHelpMessage="温馨提醒"
@@ -26,19 +26,15 @@
         </a-button>
       </template>
     </BasicTable>
-
-     <!-- 分页导航 -->
-      <div class="pagination">
-        <button @click="goToPage(1)" :disabled="currentPage === 1">首页</button>
-        <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">上一页</button>
-        <span>第 {{ currentPage }} 页 / 共 {{ totalPages }}</span>
-        <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">下一页</button>
-        <button @click="goToPage(totalPages)" :disabled="currentPage === totalPages">末页</button>
-      </div>
+    <!-- 分页导航 -->
+    <div class="pagination">
+      <button @click="goToPage(1)" :disabled="currentPage === 1">首页</button>
+      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">上一页</button>
+      <span>第 {{ currentPage }} 页 / 共 {{ totalPages }}</span>
+      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">下一页</button>
+      <button @click="goToPage(totalPages)" :disabled="currentPage === totalPages">末页</button>
+    </div>
   </div>
-
-
-
 
 </template>
 
@@ -78,7 +74,7 @@
       }
       return {
         columns: getBasicColumnscc(),
-        data: getBasicDatacc(),
+        // data: getBasicDatacc(),
         canResize,
         loading,
         striped,
@@ -94,43 +90,22 @@
 
     data() {
         return {
-          job_name: '',
-          remark: '',
           jobs: [],
-          items: [],
           currentPage: 1,
           totalPages: 1,
           pageSize: 10,
         };
     },
+
     created() {
       this.fetchData();
     },
-    methods: {
-      async addExample() {
-        const response = await fetch('http://10.97.80.119:8000/job/api/notes/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: this.job_name,
-            description: this.remark,
-          }),
-        });
 
-        if (response.ok) {
-          const example = await response.json();
-          this.jobs.push(example);
-          this.job_name = '';
-          this.remark = '';
-        }
-      },
+    methods: {
       fetchData() {
         const url = `http://10.97.80.119:8000/job/api/jobs/?page=${this.currentPage}&page_size=${this.pageSize}`;
         axios.get(url)
           .then(response => {
-            this.items = response.data.results;
             this.totalPages = Math.ceil(response.data.count / this.pageSize);
             this.jobs = response.data.results;
           })
