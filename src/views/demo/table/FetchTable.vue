@@ -20,7 +20,7 @@
     components: { BasicTable, PageWrapper },
     setup() {
       const [registerTable, { reload }] = useTable({
-        title: '远程加载示例',
+        title: '远程加载示例2',
         api: demoListApi,
         columns: getBasicColumns(),
         pagination: { pageSize: 10 },
