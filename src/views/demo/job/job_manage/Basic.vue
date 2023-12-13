@@ -86,7 +86,7 @@
   },
     methods: {
     async addExample() {
-      const response = await fetch('http://localhost:8000/job/api/notes/', {
+      const response = await fetch('http://10.97.80.119:8000/job/api/notes/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,7 +106,7 @@
     },
   },
     async mounted() {
-    const response = await fetch('http://localhost:8000/job/api/notes/');
+    const response = await fetch('http://10.97.80.119:8000/job/api/notes/');
     if (response.ok) {
       this.jobs = await response.json();
     }
