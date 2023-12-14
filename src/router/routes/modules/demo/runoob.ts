@@ -139,6 +139,30 @@ const permission: AppRouteModule = {
             title: 'Directives_v-if',
           },
         },
+        {
+          path: 'Directives_v-for',
+          name: 'Directives_v-for',
+          component: () => import('/@/views/demo/runoob/Directives_v-for.vue'),
+          meta: {
+            title: 'Directives_v-for',
+          },
+        },
+        {
+          path: 'Directives_v-on',
+          name: 'Directives_v-on',
+          component: () => import('/@/views/demo/runoob/Directives_v-on.vue'),
+          meta: {
+            title: 'Directives_v-on',
+          },
+        },
+        {
+          path: 'Directives_v-show',
+          name: 'Directives_v-show',
+          component: () => import('/@/views/demo/runoob/Directives_v-show.vue'),
+          meta: {
+            title: 'Directives_v-show',
+          },
+        },
 
       ],
     },
