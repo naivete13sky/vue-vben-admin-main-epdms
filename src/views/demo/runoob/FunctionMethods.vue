@@ -1,5 +1,7 @@
 <template>
   <div id="app" class="demo">
+    FunctionMethods
+    <br>
     <p>{{ count }}</p>
   </div>
 

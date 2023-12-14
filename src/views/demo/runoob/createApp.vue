@@ -2,6 +2,8 @@
 
 <template>
   <div id="hello-vue" class="demo">
+    createApp
+    <br>
     {{ message }}
   </div>
 </template>

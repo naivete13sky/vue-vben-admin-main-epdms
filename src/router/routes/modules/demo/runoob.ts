@@ -78,27 +78,8 @@ const permission: AppRouteModule = {
       meta: {
         title: 'Vue3_start',
       },
-      redirect: '/runoob/Vue3_start/menu1-1/menu1-1-1',
+      redirect: '/runoob/Vue3_start/createApp',
       children: [
-        {
-          path: 'menu1-1',
-          name: 'Menu11Demo',
-          component: getParentLayout('Menu11Demo'),
-          meta: {
-            title: 'Menu1-1',
-          },
-          redirect: '/level/menu1/menu1-1/menu1-1-1',
-          children: [
-            {
-              path: 'menu1-1-1',
-              name: 'Menu111Demo',
-              component: () => import('/@/views/demo/runoob/Menu111.vue'),
-              meta: {
-                title: 'Menu111',
-              },
-            },
-          ],
-        },
         {
           path: 'createApp',
           name: 'createApp',
@@ -123,6 +104,42 @@ const permission: AppRouteModule = {
             title: 'FunctionMethods',
           },
         },
+      ],
+    },
+    {
+      path: 'Vue3_Directives',
+      name: 'Vue3_Directives',
+      component: getParentLayout('Vue3_Directives'),
+      meta: {
+        title: 'Vue3_Directives',
+      },
+      redirect: '/runoob/Vue3_Directives/Directives_v-model',
+      children: [
+        {
+          path: 'Directives_v-model',
+          name: 'Directives_v-model',
+          component: () => import('/@/views/demo/runoob/Directives_v-model.vue'),
+          meta: {
+            title: 'Directives_v-model',
+          },
+        },
+        {
+          path: 'Directives_v-bind',
+          name: 'Directives_v-bind',
+          component: () => import('/@/views/demo/runoob/Directives_v-bind.vue'),
+          meta: {
+            title: 'Directives_v-bind',
+          },
+        },
+        {
+          path: 'Directives_v-if',
+          name: 'Directives_v-if',
+          component: () => import('/@/views/demo/runoob/Directives_v-if.vue'),
+          meta: {
+            title: 'Directives_v-if',
+          },
+        },
+
       ],
     },
   ],
