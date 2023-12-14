@@ -1,16 +1,20 @@
 <template>
-  <div class="p-5">
-    多层级缓存-页面2-runoob-first
-    <br />
-    <Input />
-  </div>
+  <div id="hello-vue" class="demo">
+  {{ message }}
+</div>
 </template>
+
+
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { Input } from 'ant-design-vue';
 
   export default defineComponent({
-    name: 'Menu2Demo',
-    components: { Input },
+    data() {
+      return {
+        message: 'Hello Vue!!'
+      }
+    }
   });
 </script>
+
+
