@@ -166,6 +166,66 @@ const permission: AppRouteModule = {
 
       ],
     },
+    {
+      path: 'Vue3_Template',
+      name: 'Vue3_Template',
+      component: getParentLayout('Vue3_Template'),
+      meta: {
+        title: 'Vue3_Template',
+      },
+      redirect: '/runoob/Vue3_Template/Template_insert_text',
+      children: [
+        {
+          path: 'Template_insert_text',
+          name: 'Template_insert_text',
+          component: () => import('/@/views/demo/runoob/Template_insert_text.vue'),
+          meta: {
+            title: 'Template_insert_text',
+          },
+        },
+        {
+          path: 'Template_insert_html',
+          name: 'Template_insert_html',
+          component: () => import('/@/views/demo/runoob/Template_insert_html.vue'),
+          meta: {
+            title: 'Template_insert_html',
+          },
+        },
+        {
+          path: 'Template_attribute',
+          name: 'Template_attribute',
+          component: () => import('/@/views/demo/runoob/Template_attribute.vue'),
+          meta: {
+            title: 'Template_attribute',
+          },
+        },
+        {
+          path: 'Template_expression',
+          name: 'Template_expression',
+          component: () => import('/@/views/demo/runoob/Template_expression.vue'),
+          meta: {
+            title: 'Template_expression',
+          },
+        },
+        {
+          path: 'Template_directives',
+          name: 'Template_directives',
+          component: () => import('/@/views/demo/runoob/Template_directives.vue'),
+          meta: {
+            title: 'Template_directives',
+          },
+        },
+        {
+          path: 'Template_parameter',
+          name: 'Template_parameter',
+          component: () => import('/@/views/demo/runoob/Template_parameter.vue'),
+          meta: {
+            title: 'Template_parameter',
+          },
+        },
+
+      ],
+    },
   ],
 };
 
