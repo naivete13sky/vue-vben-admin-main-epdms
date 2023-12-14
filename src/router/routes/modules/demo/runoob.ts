@@ -62,6 +62,15 @@ const permission: AppRouteModule = {
         // ignoreKeepAlive: true,
       },
     },
+    {
+      path: 'DemoFirst',
+      name: 'DemoFirst',
+      component: () => import('/@/views/demo/runoob/DemoFirst.vue'),
+      meta: {
+        title: 'routes.runoob.runoob.DemoFirst',
+        // ignoreKeepAlive: true,
+      },
+    },
   ],
 };
 
