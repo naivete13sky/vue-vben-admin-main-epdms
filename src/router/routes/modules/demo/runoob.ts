@@ -115,6 +115,14 @@ const permission: AppRouteModule = {
             title: 'FunctionData',
           },
         },
+        {
+          path: 'FunctionMethods',
+          name: 'FunctionMethods',
+          component: () => import('/@/views/demo/runoob/FunctionMethods.vue'),
+          meta: {
+            title: 'FunctionMethods',
+          },
+        },
       ],
     },
   ],

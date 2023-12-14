@@ -28,3 +28,6 @@ export default {
 <style scoped>
 /* Add your styles here */
 </style>
+
+<!--data 选项是一个函数。Vue 在创建新组件实例的过程中调用此函数。
+它应该返回一个对象，然后 Vue 会通过响应性系统将其包裹起来，并以 $data 的形式存储在组件实例中。-->
