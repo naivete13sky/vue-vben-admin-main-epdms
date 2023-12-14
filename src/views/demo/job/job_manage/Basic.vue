@@ -33,6 +33,7 @@
       <span>第 {{ currentPage }} 页 / 共 {{ totalPages }}</span>
       <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">下一页</button>
       <button @click="goToPage(totalPages)" :disabled="currentPage === totalPages">末页</button>
+      <input v-model.trim="inputPage" @input="handleInput" @keydown.enter="jumpToPage" />
     </div>
   </div>
 
@@ -94,6 +95,7 @@
           currentPage: 1,
           totalPages: 1,
           pageSize: 10,
+          inputPage: "", // 新增的输入框绑定的数据
         };
     },
 
@@ -116,6 +118,20 @@
       goToPage(page) {
         if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
           this.currentPage = page;
+          this.fetchData();
+        }
+      },
+      // 新增方法，处理输入框输入变化
+      handleInput() {
+        // 在这里你可以添加一些逻辑，比如限制只能输入数字等
+        // 例如：this.inputPage = this.inputPage.replace(/[^\d]/g, "");
+      },
+
+      // 新增方法，处理输入框回车事件
+      jumpToPage() {
+        const targetPage = parseInt(this.inputPage);
+        if (targetPage >= 1 && targetPage <= this.totalPages && targetPage !== this.currentPage) {
+          this.currentPage = targetPage;
           this.fetchData();
         }
       },
