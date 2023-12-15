@@ -480,6 +480,9 @@ export async function getBasicDatacc3() {
 
     const response = await axios.get(url, { params });
     const data = response.data.results;
+    const record_count = response.data.count;
+    const next_url = response.data.next;
+    const previous_url = response.data.previous;
 
     console.log("data:", data);
     console.log("data type:", typeof data);
@@ -495,7 +498,7 @@ export async function getBasicDatacc3() {
     }));
 
     console.log("getBasicDatacc3, arr:", arr);
-    return arr;
+    return {arr,record_count};
   } catch (error) {
     console.error('Error fetching data:', error);
     // 处理错误，例如返回默认值或抛出自定义错误

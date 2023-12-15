@@ -26,6 +26,15 @@
         </a-button>
       </template>
     </BasicTable>
+    <!-- 分页导航 -->
+    <div class="pagination">
+      <button @click="goToPage(1)" :disabled="currentPage === 1">首页</button>
+      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">上一页</button>
+      <span>第 {{ currentPage }} 页 / 共 {{ totalPages }}</span>
+      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">下一页</button>
+      <button @click="goToPage(totalPages)" :disabled="currentPage === totalPages">末页</button>
+      <input v-model.trim="inputPage" @input="handleInput" @keydown.enter="jumpToPage" />
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -63,12 +72,21 @@
       }
 
       const datacc = ref([]); // 初始化为一个空数组
+      const record_count = ref(0);
+      const totalPages = ref(0);
 
       onMounted(async () => {
         // 在组件挂载后进行异步操作
         const result = await getBasicDatacc3();
-        datacc.value = result; // 更新数据
+        datacc.value = result.arr; // 更新数据
+        record_count.value = result.record_count;
+        // alert(record_count.value);
+        totalPages.value = Math.ceil(record_count.value / 10);
+
       });
+
+
+
 
       return {
         columns: getBasicColumnscc(),
@@ -83,6 +101,10 @@
         toggleBorder,
         pagination,
         handleColumnChange,
+        currentPage: 1,
+        totalPages: totalPages,
+        pageSize: 10,
+        inputPage: "", // 新增的输入框绑定的数据
       };
     },
   });
