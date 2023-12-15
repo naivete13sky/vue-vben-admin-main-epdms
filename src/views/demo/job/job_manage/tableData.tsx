@@ -470,12 +470,13 @@ export function getBasicDatacc() {
 
 
 
-export async function getBasicDatacc3() {
+export async function getBasicDatacc3(currentPage,pageSize) {
   try {
+    // alert(currentPage);
     const url = 'http://10.97.80.119:8000/job/api/jobs/';
     const params = {
-      page: 1,
-      per_page: 10,
+      page: currentPage,
+      per_page: pageSize,
     };
 
     const response = await axios.get(url, { params });
@@ -484,11 +485,11 @@ export async function getBasicDatacc3() {
     const next_url = response.data.next;
     const previous_url = response.data.previous;
 
-    console.log("data:", data);
-    console.log("data type:", typeof data);
+    // console.log("data:", data);
+    // console.log("data type:", typeof data);
 
     const arr = data.map((item, index) => ({
-      id: `${index}`,
+      id: `${item.id}`,
       job_name: `${item.job_name}`,
       file_compressed: `${item.file_compressed}`,
       has_file_type: `${item.has_file_type}`,

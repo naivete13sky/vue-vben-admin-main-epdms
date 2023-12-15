@@ -71,13 +71,14 @@
         console.log('ColumnChanged', data);
       }
 
-      const datacc = ref([]); // 初始化为一个空数组
+      // const datacc = ref([]); // 初始化为一个空数组
       const record_count = ref(0);
       const totalPages = ref(0);
 
+      const datacc: Ref<any[]> = ref([]); // 初始化为一个空数组
       onMounted(async () => {
         // 在组件挂载后进行异步操作
-        const result = await getBasicDatacc3();
+        const result = await getBasicDatacc3(1,10);
         datacc.value = result.arr; // 更新数据
         record_count.value = result.record_count;
         // alert(record_count.value);
@@ -107,6 +108,19 @@
         inputPage: "", // 新增的输入框绑定的数据
       };
     },
+    methods:{
+      async goToPage(page) {
+        if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+          // alert(page);
+          this.currentPage = page;
+          // 在这里调用获取数据的函数，例如 getBasicDatacc3
+          const result = await getBasicDatacc3(this.currentPage, this.pageSize);
+          this.datacc = result.arr;
+
+
+        }
+      },
+    }
   });
 </script>
 
