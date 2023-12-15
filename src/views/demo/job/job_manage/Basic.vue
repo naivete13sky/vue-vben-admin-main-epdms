@@ -89,7 +89,8 @@
       });
       async function goToPage(page) {
         if (page >= 1 && page <= totalPages.value && page !== currentPage) {
-          currentPage.value = page;
+          // currentPage.value = page;
+          this.currentPage = page;
           const result = await getBasicDatacc3(page, pageSize);
           datacc.value = result.arr;
         }
