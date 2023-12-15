@@ -4,7 +4,7 @@
       title="基础示例"
       titleHelpMessage="温馨提醒"
       :columns="columns"
-      :dataSource="jobs"
+      :dataSource="data2"
       :canResize="canResize"
       :loading="loading"
       :striped="striped"
@@ -26,24 +26,12 @@
         </a-button>
       </template>
     </BasicTable>
-    <!-- 分页导航 -->
-    <div class="pagination">
-      <button @click="goToPage(1)" :disabled="currentPage === 1">首页</button>
-      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">上一页</button>
-      <span>第 {{ currentPage }} 页 / 共 {{ totalPages }}</span>
-      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">下一页</button>
-      <button @click="goToPage(totalPages)" :disabled="currentPage === totalPages">末页</button>
-      <input v-model.trim="inputPage" @input="handleInput" @keydown.enter="jumpToPage" />
-    </div>
   </div>
-
 </template>
-
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
+  import { defineComponent, ref, onMounted} from 'vue';
   import { BasicTable, ColumnChangeParam } from '/@/components/Table';
-  import { getBasicColumnscc, getBasicDatacc } from './tableData';
-  import axios from 'axios';
+  import { getBasicColumnscc, getBasicData,getBasicDatacc,getBasicDatacc3 } from './tableData';
 
   export default defineComponent({
     components: { BasicTable },
@@ -73,9 +61,19 @@
       function handleColumnChange(data: ColumnChangeParam[]) {
         console.log('ColumnChanged', data);
       }
+
+      const datacc = ref([]); // 初始化为一个空数组
+
+      onMounted(async () => {
+        // 在组件挂载后进行异步操作
+        const result = await getBasicDatacc3();
+        datacc.value = result; // 更新数据
+      });
+
       return {
         columns: getBasicColumnscc(),
         data: getBasicDatacc(),
+        data2: datacc,
         canResize,
         loading,
         striped,
@@ -88,58 +86,5 @@
         handleColumnChange,
       };
     },
-
-    data() {
-        return {
-          jobs: [],
-          currentPage: 1,
-          totalPages: 1,
-          pageSize: 10,
-          inputPage: "", // 新增的输入框绑定的数据
-        };
-    },
-
-    created() {
-      this.fetchData();
-    },
-
-    methods: {
-      fetchData() {
-        const url = `http://10.97.80.119:8000/job/api/jobs/?page=${this.currentPage}&page_size=${this.pageSize}`;
-        axios.get(url)
-          .then(response => {
-            this.totalPages = Math.ceil(response.data.count / this.pageSize);
-            this.jobs = response.data.results;
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
-      },
-      goToPage(page) {
-        if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
-          this.currentPage = page;
-          this.fetchData();
-        }
-      },
-      // 新增方法，处理输入框输入变化
-      handleInput() {
-        // 在这里你可以添加一些逻辑，比如限制只能输入数字等
-        // 例如：this.inputPage = this.inputPage.replace(/[^\d]/g, "");
-      },
-
-      // 新增方法，处理输入框回车事件
-      jumpToPage() {
-        const targetPage = parseInt(this.inputPage);
-        if (targetPage >= 1 && targetPage <= this.totalPages && targetPage !== this.currentPage) {
-          this.currentPage = targetPage;
-          this.fetchData();
-        }
-      },
-    },
-
   });
-
-
 </script>
-
-
