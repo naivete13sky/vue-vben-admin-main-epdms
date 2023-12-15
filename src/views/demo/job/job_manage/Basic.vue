@@ -74,20 +74,41 @@
       // const datacc = ref([]); // 初始化为一个空数组
       const record_count = ref(0);
       const totalPages = ref(0);
+      let currentPage = ref(1);
+      const pageSize = 10;
 
       const datacc: Ref<any[]> = ref([]); // 初始化为一个空数组
       onMounted(async () => {
         // 在组件挂载后进行异步操作
-        const result = await getBasicDatacc3(1,10);
+        const result = await getBasicDatacc3(currentPage.value,pageSize);
         datacc.value = result.arr; // 更新数据
         record_count.value = result.record_count;
         // alert(record_count.value);
         totalPages.value = Math.ceil(record_count.value / 10);
 
       });
+      async function goToPage(page) {
+        if (page >= 1 && page <= totalPages.value && page !== currentPage) {
+          currentPage.value = page;
+          const result = await getBasicDatacc3(page, pageSize);
+          datacc.value = result.arr;
+        }
+      };
+      // 新增方法，处理输入框输入变化
+      async function handleInput() {
+        // 在这里你可以添加一些逻辑，比如限制只能输入数字等
+        // 例如：this.inputPage = this.inputPage.replace(/[^\d]/g, "");
+      };
 
-
-
+      // 新增方法，处理输入框回车事件
+      async function jumpToPage() {
+        const targetPage = parseInt(this.inputPage);
+        if (targetPage >= 1 && targetPage <= this.totalPages && targetPage !== this.currentPage) {
+          this.currentPage = targetPage;
+          const result = await getBasicDatacc3(targetPage, pageSize);
+          datacc.value = result.arr;
+        }
+      };
 
       return {
         columns: getBasicColumnscc(),
@@ -106,21 +127,11 @@
         totalPages: totalPages,
         pageSize: 10,
         inputPage: "", // 新增的输入框绑定的数据
+        goToPage,
+        jumpToPage,
       };
     },
-    methods:{
-      async goToPage(page) {
-        if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
-          // alert(page);
-          this.currentPage = page;
-          // 在这里调用获取数据的函数，例如 getBasicDatacc3
-          const result = await getBasicDatacc3(this.currentPage, this.pageSize);
-          this.datacc = result.arr;
 
-
-        }
-      },
-    }
   });
 </script>
 
