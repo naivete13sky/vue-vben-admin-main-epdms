@@ -469,160 +469,6 @@ export function getBasicDatacc() {
 
 
 
-export function getBasicDatacc0() {
-  const url = 'http://10.97.80.119:8000/job/api/jobs/'; // 替换为您的API端点URL
-  const params = {
-    page: 1, // 您可以根据需要更改页码
-    per_page: 10, // 更改为您想要获取的每页结果数
-  };
-
-  return axios.get(url, { params })
-    .then(response => {
-      const data = response.data.results; // 假设分页数据中有一个名为"results"的属性，其中包含结果数组
-      const arr: any = [];
-      for (let index = 0; index < 10; index++) {
-        arr.push({
-          id: `${index}`,
-          name: 'John Browncc',
-        });
-      }
-      return arr;
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-      // 在这里处理错误，例如返回默认值或抛出自定义错误
-    });
-}
-
-export function getBasicDatacc30() {
-  return (() => {
-    const url = 'http://10.97.80.119:8000/job/api/jobs/'; // 替换为您的API端点URL
-    const params = {
-      page: 1, // 您可以根据需要更改页码
-      per_page: 10, // 更改为您想要获取的每页结果数
-    };
-    const arr: any = [];
-    axios.get(url, { params })
-    .then(response => {
-      const data = response.data.results; // 假设分页数据中有一个名为"results"的属性，其中包含结果数组
-      console.log("data:",data);
-      for (let index = 0; index < 10; index++) {
-        arr.push({
-          id: `${index}`,
-          name: 'John Browncc',
-        });
-      }
-
-
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-      // 在这里处理错误，例如返回默认值或抛出自定义错误
-    });
-    console.log("arr:",arr);
-    return arr;
-  })();
-
-}
-
-
-
-
-
-export function getBasicDatacc31() {
-  const url = 'http://10.97.80.119:8000/job/api/jobs/';
-  const params = {
-    page: 1,
-    per_page: 10,
-  };
-  const arr = [];
-
-  return axios.get(url, { params })
-    .then(response => {
-      const data = response.data.results;
-
-      for (let index = 0; index < 10; index++) {
-        arr.push({
-          id: `${index}`,
-          name: 'John Browncc',
-        });
-      }
-
-      console.log("arr:", arr);
-      return arr;
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-      // 处理错误，例如返回默认值或抛出自定义错误
-      return [];
-    });
-}
-
-export function getBasicDatacc32() {
-  return (() => {
-    const url = 'http://10.97.80.119:8000/job/api/jobs/';
-    const params = {
-      page: 1,
-      per_page: 10,
-    };
-
-    const data = axios.get(url, { params })
-    .then(response => {
-      const res = response.data.results;
-      return res;
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-      // 处理错误，例如返回默认值或抛出自定义错误
-      return [];
-    });
-    console.log("data:",data);
-    console.log("data type:",typeof(data));
-
-
-    const arr: any = [];
-    for (let index = 0; index < 10; index++) {
-      arr.push({
-        id: `${index}`,
-        name: 'John Browncc',
-      });
-    }
-    console.log("getBasicDatacc3,arr:",arr);
-    return arr;
-  })();
-}
-
-
-
-
-export async function getBasicDatacc33() {
-  try {
-    const url = 'http://10.97.80.119:8000/job/api/jobs/';
-    const params = {
-      page: 1,
-      per_page: 10,
-    };
-
-    const response = await axios.get(url, { params });
-    const data = response.data.results;
-
-    console.log("data:", data);
-    console.log("data type:", typeof data);
-
-    const arr = data.map((item, index) => ({
-      id: `${index}`,
-      name: 'John Browncc',
-    }));
-
-    console.log("getBasicDatacc3, arr:", arr);
-    return arr;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    // 处理错误，例如返回默认值或抛出自定义错误
-    return [];
-  }
-}
-
 
 export async function getBasicDatacc3() {
   try {
@@ -641,6 +487,11 @@ export async function getBasicDatacc3() {
     const arr = data.map((item, index) => ({
       id: `${index}`,
       job_name: `${item.job_name}`,
+      file_compressed: `${item.file_compressed}`,
+      has_file_type: `${item.has_file_type}`,
+      status: `${item.status}`,
+      publish: `${item.publish}`,
+      remark: `${item.remark}`,
     }));
 
     console.log("getBasicDatacc3, arr:", arr);
