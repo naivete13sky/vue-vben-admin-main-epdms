@@ -26,6 +26,18 @@ export function getBasicColumns(): BasicColumn[] {
       title: '测试料号',
       dataIndex: 'file',
       width: 150,
+      customRender: ({ text }) => {
+        // 使用split方法分割链接，并获取最后一个部分作为文件名
+        const filename = text.split('/').pop();
+        // 截取前20个字符
+        const truncatedFilename = filename.length > 15 ? `${filename.slice(0, 15)}...` : filename;
+        // 在这里添加超链接逻辑
+        return (
+          <a href={`${text}`} target="_blank" rel="noopener noreferrer">
+            {truncatedFilename}
+          </a>
+        );
+      },
     },
     {
       title: '文件类型',
@@ -41,6 +53,18 @@ export function getBasicColumns(): BasicColumn[] {
       title: '标准料号',
       dataIndex: 'standard_odb',
       width: 150,
+      customRender: ({ text }) => {
+        // 使用split方法分割链接，并获取最后一个部分作为文件名
+        const filename = text.split('/').pop();
+        // 截取前20个字符
+        const truncatedFilename = filename.length > 15 ? `${filename.slice(0, 15)}...` : filename;
+        // 在这里添加超链接逻辑
+        return (
+          <a href={`${text}`} target="_blank" rel="noopener noreferrer">
+            {truncatedFilename}
+          </a>
+        );
+      },
     },
     {
       title: 'G比图结果',
