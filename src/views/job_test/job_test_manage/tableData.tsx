@@ -10,12 +10,12 @@ export function getBasicColumns(): BasicColumn[] {
       title: 'ID',
       dataIndex: 'id',
       fixed: 'left',
-      width: 200,
+      width: 100,
     },
     {
       title: '父料号ID',
       dataIndex: 'job_parent',
-      width: 150,
+      width: 100,
     },
     {
       title: '料号名称',
@@ -69,12 +69,12 @@ export function getBasicColumns(): BasicColumn[] {
     {
       title: 'G比图结果',
       dataIndex: 'vs_result_g',
-      width: 150,
+      width: 100,
     },
     {
       title: '状态',
       dataIndex: 'status',
-      width: 150,
+      width: 100,
       filters: [
         { text: 'published', value: 'published' },
         { text: 'draft', value: 'draft' },
