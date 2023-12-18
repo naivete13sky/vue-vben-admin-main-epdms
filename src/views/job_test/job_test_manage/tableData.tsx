@@ -13,36 +13,65 @@ export function getBasicColumns(): BasicColumn[] {
       width: 200,
     },
     {
-      title: '姓名',
-      dataIndex: 'name',
+      title: '父料号ID',
+      dataIndex: 'job_parent',
+      width: 150,
+    },
+    {
+      title: '料号名称',
+      dataIndex: 'job_name',
+      width: 150,
+    },
+    {
+      title: '测试料号',
+      dataIndex: 'file',
+      width: 150,
+    },
+    {
+      title: '文件类型',
+      dataIndex: 'file_type',
+      width: 150,
+    },
+    {
+      title: '模块',
+      dataIndex: 'test_usage_for_epcam_module',
+      width: 150,
+    },
+    {
+      title: '标准料号',
+      dataIndex: 'standard_odb',
+      width: 150,
+    },
+    {
+      title: 'G比图结果',
+      dataIndex: 'vs_result_g',
+      width: 150,
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
       width: 150,
       filters: [
-        { text: 'Male', value: 'male' },
-        { text: 'Female', value: 'female' },
+        { text: 'published', value: 'published' },
+        { text: 'draft', value: 'draft' },
       ],
     },
     {
-      title: '地址',
-      dataIndex: 'address',
+      title: '负责人ID',
+      dataIndex: 'author',
+      width: 150,
     },
     {
-      title: '编号',
-      dataIndex: 'no',
+      title: '更新时间',
       width: 150,
       sorter: true,
-      defaultHidden: true,
+      dataIndex: 'updated',
     },
     {
-      title: '开始时间',
+      title: '备注',
       width: 150,
       sorter: true,
-      dataIndex: 'beginTime',
-    },
-    {
-      title: '结束时间',
-      width: 150,
-      sorter: true,
-      dataIndex: 'endTime',
+      dataIndex: 'remark',
     },
   ];
 }
@@ -247,7 +276,7 @@ export function getFormConfig(): Partial<FormProps> {
     ],
   };
 }
-export function getBasicData() {
+export function getBasicDataDemo() {
   return (() => {
     const arr: any = [];
     for (let index = 0; index < 40; index++) {
@@ -402,78 +431,10 @@ export const vxeTableFormSchema: VxeFormItemProps[] = [
   },
 ];
 
-
-// cc
-export function getBasicColumnscc(): BasicColumn[] {
-  return [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      fixed: 'left',
-      width: 200,
-    },
-    {
-      title: '料号名称',
-      dataIndex: 'job_name',
-      width: 150,
-    },
-    {
-      title: '附件',
-      dataIndex: 'file_compressed',
-      width: 150,
-    },
-    {
-      title: '文件类型',
-      dataIndex: 'has_file_type',
-      width: 150,
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      width: 150,
-      filters: [
-        { text: 'published', value: 'published' },
-        { text: 'draft', value: 'draft' },
-      ],
-    },
-
-    {
-      title: 'publish',
-      width: 150,
-      sorter: true,
-      dataIndex: 'publish',
-    },
-    {
-      title: '备注',
-      width: 150,
-      sorter: true,
-      dataIndex: 'remark',
-    },
-  ];
-}
-
-export function getBasicDatacc() {
-  return (() => {
-    const arr: any = [];
-    for (let index = 0; index < 10; index++) {
-      arr.push({
-        id: `${index}`,
-        name: 'John Browncc',
-      });
-    }
-    console.log("old:",arr);
-    return arr;
-  })();
-}
-
-
-
-
-
-export async function getBasicDatacc3(currentPage,pageSize) {
+export async function getBasicData(currentPage,pageSize) {
   try {
     // alert(currentPage);
-    const url = 'http://10.97.80.119:8000/job/api/jobs/';
+    const url = 'http://10.97.80.119:8000/eptest/api/jobForTests/';
     const params = {
       page: currentPage,
       per_page: pageSize,
@@ -490,11 +451,16 @@ export async function getBasicDatacc3(currentPage,pageSize) {
 
     const arr = data.map((item, index) => ({
       id: `${item.id}`,
+      job_parent: `${item.job_parent}`,
       job_name: `${item.job_name}`,
-      file_compressed: `${item.file_compressed}`,
-      has_file_type: `${item.has_file_type}`,
-      status: `${item.status}`,
-      publish: `${item.publish}`,
+      file: `${item.file}`,
+      file_type: `${item.file_type}`,
+      test_usage_for_epcam_module:`${item.test_usage_for_epcam_module}`,
+      standard_odb:`${item.standard_odb}`,
+      vs_result_g:`${item.vs_result_g}`,
+      status:`${item.status}`,
+      author:`${item.author}`,
+      updated: `${item.updated}`,
       remark: `${item.remark}`,
     }));
 

@@ -40,7 +40,7 @@
 <script lang="ts">
   import { defineComponent, ref, onMounted} from 'vue';
   import { BasicTable, ColumnChangeParam } from '/@/components/Table';
-  import { getBasicColumnscc, getBasicData,getBasicDatacc,getBasicDatacc3 } from './tableData';
+  import { getBasicColumns, getBasicData } from './tableData';
 
   export default defineComponent({
     components: { BasicTable },
@@ -80,7 +80,7 @@
       const datacc: Ref<any[]> = ref([]); // 初始化为一个空数组
       onMounted(async () => {
         // 在组件挂载后进行异步操作
-        const result = await getBasicDatacc3(currentPage.value,pageSize);
+        const result = await getBasicData(currentPage.value,pageSize);
         datacc.value = result.arr; // 更新数据
         record_count.value = result.record_count;
         // alert(record_count.value);
@@ -91,7 +91,7 @@
         if (page >= 1 && page <= totalPages.value && page !== currentPage) {
           // currentPage.value = page;
           this.currentPage = page;
-          const result = await getBasicDatacc3(page, pageSize);
+          const result = await getBasicData(page, pageSize);
           datacc.value = result.arr;
         }
       };
@@ -106,13 +106,13 @@
         const targetPage = parseInt(this.inputPage);
         if (targetPage >= 1 && targetPage <= this.totalPages && targetPage !== this.currentPage) {
           this.currentPage = targetPage;
-          const result = await getBasicDatacc3(targetPage, pageSize);
+          const result = await getBasicData(targetPage, pageSize);
           datacc.value = result.arr;
         }
       };
 
       return {
-        columns: getBasicColumnscc(),
+        columns: getBasicColumns(),
         data: datacc,
         canResize,
         loading,
