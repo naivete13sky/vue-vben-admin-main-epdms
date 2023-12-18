@@ -1,7 +1,7 @@
 export default {
-  job: {
-    job: '主料号',
-    job_manage: '主料号管理',
+  job_test: {
+    job_test: '测试料号',
+    job_test_manage: '测试料号管理',
     test: 'test基础组件',
     basic: '基础组件',
     transition: '动画组件',
