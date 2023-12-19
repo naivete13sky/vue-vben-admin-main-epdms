@@ -1,19 +1,9 @@
 <template>
   <div class="p-4">
-    <!-- 搜索框 -->
-<!--    <a-input-->
-<!--      v-model.trim="searchKeyword"-->
-<!--      placeholder="请输入搜索关键字"-->
-<!--      style="width: 200px; margin-right: 10px;"-->
-<!--      @pressEnter="handleSearch"-->
-<!--    />-->
-<!--    使用 v-model 的原生事件： 尝试使用@update:modelValue事件替代@input事件。有时候，Vue 3的模板会更喜欢使用@update:modelValue。-->
-    <input v-model.trim="searchKeyword" @update:modelValue="handleInput" />
+    <!--    使用 v-model 的原生事件： 尝试使用@update:modelValue事件替代@input事件。有时候，Vue 3的模板会更喜欢使用@update:modelValue。-->
+    <input v-model.trim="searchKeyword" @update:modelValue="handleInput" @keydown.enter="handleSearch" />
     <a-button type="primary" @click="handleSearch">搜索</a-button>
 
-    <div>
-      <p>Search Keyword: {{ searchKeyword }}</p>
-    </div>
 
     <!-- BasicTable -->
     <BasicTable
