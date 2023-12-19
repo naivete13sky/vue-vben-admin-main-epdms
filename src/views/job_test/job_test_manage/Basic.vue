@@ -1,17 +1,20 @@
 <template>
   <div class="p-4">
+    <!-- 筛选 -->
+    <select v-model="selectedOption" style="width: 100px;">
+      <option v-for="option in options" :key="option.value" :value="option.value" :label="option.label">
+        {{ option.label }}
+      </option>
+    </select>
+
+    |
 
     <!--    使用 v-model 的原生事件： 尝试使用@update:modelValue事件替代@input事件。有时候，Vue 3的模板会更喜欢使用@update:modelValue。-->
     <input v-model.trim="searchKeyword" @update:modelValue="handleInput" @keydown.enter="handleSearch" />
     <a-button type="primary" @click="handleSearch">搜索</a-button>
 
 
-    <!-- 添加在搜索框下方 -->
-    <select v-model="selectedOption" style="width: 100px;">
-      <option v-for="option in options" :key="option.value" :value="option.value" :label="option.label">
-        {{ option.label }}
-      </option>
-    </select>
+
 
 
 
@@ -59,7 +62,7 @@
 <script lang="ts">
   import { defineComponent, ref, onMounted} from 'vue';
   import { BasicTable, ColumnChangeParam } from '/@/components/Table';
-  import { getBasicColumns, getBasicData, getBasicDataByKeyword } from './tableData';
+  import { getBasicColumns, getBasicData, getBasicDataByKeyword,getBasicDataOptions } from './tableData';
 
 
   export default defineComponent({
@@ -99,6 +102,9 @@
       const totalPages = ref(0);
       let currentPage = ref(1);
       const pageSize = 10;
+      const data_options = ref([]);
+      const data_options_file_type = ref([]);
+
 
       // 挂载，在组件挂载后进行异步操作
       onMounted(async () => {
@@ -107,6 +113,13 @@
         datacc.value = result.arr; // 更新数据
         record_count.value = result.record_count;
         totalPages.value = Math.ceil(record_count.value / pageSize);
+
+        const result_options = await getBasicDataOptions();
+        data_options.vlaue = result_options.data; // 更新数据
+        // console.log("data_options:", data_options.vlaue);
+        // alert(data_options.vlaue.actions.POST.file_type.choices);
+        data_options_file_type.value = data_options.vlaue.actions.POST.file_type.choices
+        console.log("data_options_file_type:", data_options_file_type.value);
       });
 
       // 跳转到某页
@@ -153,7 +166,9 @@
           console.error('Error handling search:', error);
           // 处理错误，例如返回默认值或抛出自定义错误
         }
-      }
+      };
+
+
 
 
 
@@ -185,11 +200,32 @@
       return {
         selectedOption: null,
         options: [
-          { label: '选项1', value: 'option1' },
-          { label: '选项2', value: 'option2' },
-          { label: '选项3', value: 'option3' },
+          // { label: '选项1', value: 'option1' },
+          // { label: '选项2', value: 'option2' },
+          // { label: '选项3', value: 'option3' },
         ],
       };
+    },
+    mounted() {
+      // 遍历并添加 data_options_file_type 中的选项
+      const dataOptionsFileType = {
+        0: { value: 'gerber274X', display_name: 'Gerber274X' },
+        1: { value: 'gerber274D', display_name: 'Gerber274D' },
+        2: { value: 'dxf', display_name: 'DXF' },
+        3: { value: 'dwg', display_name: 'DWG' },
+        4: { value: 'odb', display_name: 'ODB' },
+        5: { value: 'ipc2581', display_name: 'IPC2581' },
+        6: { value: 'pcb', display_name: 'PCB' },
+        7: { value: 'else', display_name: 'Else' },
+      };
+
+      // 将选项添加到 this.options
+      for (const key in dataOptionsFileType) {
+        if (dataOptionsFileType.hasOwnProperty(key)) {
+          const option = dataOptionsFileType[key];
+          this.options.push({ label: option.display_name, value: option.value });
+        }
+      }
     },
 
   });

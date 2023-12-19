@@ -532,3 +532,25 @@ export async function getBasicDataByKeyword(keyword: string, currentPage: number
     return [];
   }
 }
+
+export async function getBasicDataOptions() {
+  try {
+    // alert(currentPage);
+    const url = 'http://10.97.80.119:8000/eptest/api/jobForTests/';
+
+    const response = await axios.options(url);
+    const data = response.data;
+
+    // console.log("data:", data);
+    // console.log("data type:", typeof data);
+
+
+
+    console.log("data, arr:", data);
+    return {data};
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    // 处理错误，例如返回默认值或抛出自定义错误
+    return [];
+  }
+}
