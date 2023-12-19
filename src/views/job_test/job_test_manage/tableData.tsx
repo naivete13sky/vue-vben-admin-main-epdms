@@ -496,3 +496,39 @@ export async function getBasicData(currentPage,pageSize) {
     return [];
   }
 }
+
+export async function getBasicDataByKeyword(keyword: string, currentPage: number, pageSize: number) {
+  try {
+    const url = 'http://10.97.80.119:8000/eptest/api/jobForTests/';
+    const params = {
+      page: currentPage,
+      per_page: pageSize,
+      search: keyword, // 添加搜索关键字参数
+    };
+
+    const response = await axios.get(url, { params });
+    const data = response.data.results;
+    const record_count = response.data.count;
+
+    const arr = data.map((item, index) => ({
+      id: `${item.id}`,
+      job_parent: `${item.job_parent}`,
+      job_name: `${item.job_name}`,
+      file: `${item.file}`,
+      file_type: `${item.file_type}`,
+      test_usage_for_epcam_module: `${item.test_usage_for_epcam_module}`,
+      standard_odb: `${item.standard_odb}`,
+      vs_result_g: `${item.vs_result_g}`,
+      status: `${item.status}`,
+      author: `${item.author}`,
+      updated: `${item.updated}`,
+      remark: `${item.remark}`,
+    }));
+
+    return { arr, record_count };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    // 处理错误，例如返回默认值或抛出自定义错误
+    return [];
+  }
+}

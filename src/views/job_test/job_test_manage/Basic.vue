@@ -1,5 +1,15 @@
 <template>
   <div class="p-4">
+    <!-- 搜索框 -->
+    <a-input
+      v-model.trim="searchKeyword"
+      placeholder="请输入搜索关键字"
+      style="width: 200px; margin-right: 10px;"
+      @pressEnter="handleSearch"
+    />
+    <a-button type="primary" @click="handleSearch">搜索</a-button>
+
+    <!-- BasicTable -->
     <BasicTable
       title="基础示例"
       titleHelpMessage="温馨提醒"
@@ -26,6 +36,7 @@
         </a-button>
       </template>
     </BasicTable>
+
     <!-- 分页导航 -->
     <div class="pagination">
       <button @click="goToPage(1)" :disabled="currentPage === 1">首页</button>
@@ -37,10 +48,11 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
   import { defineComponent, ref, onMounted} from 'vue';
   import { BasicTable, ColumnChangeParam } from '/@/components/Table';
-  import { getBasicColumns, getBasicData } from './tableData';
+  import { getBasicColumns, getBasicData, getBasicDataByKeyword } from './tableData';
 
   export default defineComponent({
     components: { BasicTable },
@@ -71,37 +83,32 @@
         console.log('ColumnChanged', data);
       }
 
-      // const datacc = ref([]); // 初始化为一个空数组
+      const datacc = ref([]); // 初始化为一个空数组
+      // const datacc: Ref<any[]> = ref([]); // 初始化为一个空数组
       const record_count = ref(0);
       const totalPages = ref(0);
       let currentPage = ref(1);
       const pageSize = 10;
 
-      const datacc: Ref<any[]> = ref([]); // 初始化为一个空数组
+      // 挂载，在组件挂载后进行异步操作
       onMounted(async () => {
         // 在组件挂载后进行异步操作
         const result = await getBasicData(currentPage.value,pageSize);
         datacc.value = result.arr; // 更新数据
         record_count.value = result.record_count;
-        // alert(record_count.value);
-        totalPages.value = Math.ceil(record_count.value / 10);
-
+        totalPages.value = Math.ceil(record_count.value / pageSize);
       });
+
+      // 跳转到某页
       async function goToPage(page) {
         if (page >= 1 && page <= totalPages.value && page !== currentPage) {
-          // currentPage.value = page;
           this.currentPage = page;
           const result = await getBasicData(page, pageSize);
           datacc.value = result.arr;
         }
       };
-      // 新增方法，处理输入框输入变化
-      async function handleInput() {
-        // 在这里你可以添加一些逻辑，比如限制只能输入数字等
-        // 例如：this.inputPage = this.inputPage.replace(/[^\d]/g, "");
-      };
 
-      // 新增方法，处理输入框回车事件
+      // 处理输入框回车事件
       async function jumpToPage() {
         const targetPage = parseInt(this.inputPage);
         if (targetPage >= 1 && targetPage <= this.totalPages && targetPage !== this.currentPage) {
@@ -110,6 +117,34 @@
           datacc.value = result.arr;
         }
       };
+
+
+      // 新增方法，处理输入框输入变化
+      async function handleInput() {
+        // 在这里你可以添加一些逻辑，比如限制只能输入数字等
+        // 例如：this.inputPage = this.inputPage.replace(/[^\d]/g, "");
+
+      };
+
+
+
+      const searchKeyword = ref(""); // 用于存储搜索关键字
+
+      async function handleSearch() {
+        try {
+          alert(searchKeyword.value);
+          // 在这里你可以调用后端接口进行搜索
+          const result = await getBasicDataByKeyword(searchKeyword.value, currentPage.value, pageSize);
+          datacc.value = result.arr;
+          record_count.value = result.record_count;
+          totalPages.value = Math.ceil(record_count.value / pageSize);
+        } catch (error) {
+          console.error('Error handling search:', error);
+          // 处理错误，例如返回默认值或抛出自定义错误
+        }
+      }
+
+
 
       return {
         columns: getBasicColumns(),
@@ -130,17 +165,11 @@
         inputPage: "", // 新增的输入框绑定的数据
         goToPage,
         jumpToPage,
+        searchKeyword,
+        handleSearch,
+        handleInput,
       };
     },
 
   });
 </script>
-
-
-<!--setup函数中的return不能包含异步获取的数据，主要是因为setup函数的执行时机和异步操作的执行时机不同。-->
-
-<!--在Vue 3中，setup函数是在组件实例创建之前同步执行的，而不是在组件实例创建之后。这样做是为了确保在组件实例创建之前就能够访问到setup函数返回的响应式对象，以便在模板中使用。-->
-
-<!--如果在setup中包含异步操作，例如异步获取数据，由于setup函数是同步执行的，它不能等待异步操作完成再返回数据。这可能导致在模板中使用的数据尚未准备好，从而引发错误或不一致的行为。-->
-
-<!--为了解决这个问题，你可以在setup函数中使用ref、reactive等创建响应式对象，并在异步操作完成后更新这些对象的值。例如，你可以在setup中初始化一个空数组或对象，然后在异步操作完成后将其填充。-->
