@@ -104,8 +104,6 @@
       const pageSize = 10;
       const data_options = ref([]);
       const data_options_file_type = ref([]);
-      const selectedOption = ref(null);
-      const options = ref([]);
 
 
       // 挂载，在组件挂载后进行异步操作
@@ -121,16 +119,7 @@
         // console.log("data_options:", data_options.vlaue);
         // alert(data_options.vlaue.actions.POST.file_type.choices);
         data_options_file_type.value = data_options.vlaue.actions.POST.file_type.choices
-        // console.log("data_options_file_type:", data_options_file_type.value);
-
-        // 将选项添加到 this.options
-        // console.log("data_options_file_type2:", data_options_file_type.value);
-        for (const key in data_options_file_type.value) {
-          if (data_options_file_type.value.hasOwnProperty(key)) {
-            const option = data_options_file_type.value[key];
-            options.value.push({ label: option.display_name, value: option.value });
-          }
-        }
+        console.log("data_options_file_type:", data_options_file_type.value);
       });
 
       // 跳转到某页
@@ -205,13 +194,39 @@
         searchKeyword,
         handleSearch,
         handleInput,
-        data_options_file_type,
-        selectedOption,
-        options,
       };
     },
+    data() {
+      return {
+        selectedOption: null,
+        options: [
+          // { label: '选项1', value: 'option1' },
+          // { label: '选项2', value: 'option2' },
+          // { label: '选项3', value: 'option3' },
+        ],
+      };
+    },
+    mounted() {
+      // 遍历并添加 data_options_file_type 中的选项
+      const dataOptionsFileType = {
+        0: { value: 'gerber274X', display_name: 'Gerber274X' },
+        1: { value: 'gerber274D', display_name: 'Gerber274D' },
+        2: { value: 'dxf', display_name: 'DXF' },
+        3: { value: 'dwg', display_name: 'DWG' },
+        4: { value: 'odb', display_name: 'ODB' },
+        5: { value: 'ipc2581', display_name: 'IPC2581' },
+        6: { value: 'pcb', display_name: 'PCB' },
+        7: { value: 'else', display_name: 'Else' },
+      };
 
-
+      // 将选项添加到 this.options
+      for (const key in dataOptionsFileType) {
+        if (dataOptionsFileType.hasOwnProperty(key)) {
+          const option = dataOptionsFileType[key];
+          this.options.push({ label: option.display_name, value: option.value });
+        }
+      }
+    },
 
   });
 
