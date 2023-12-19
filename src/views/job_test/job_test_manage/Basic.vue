@@ -1,8 +1,19 @@
 <template>
   <div class="p-4">
+
     <!--    使用 v-model 的原生事件： 尝试使用@update:modelValue事件替代@input事件。有时候，Vue 3的模板会更喜欢使用@update:modelValue。-->
     <input v-model.trim="searchKeyword" @update:modelValue="handleInput" @keydown.enter="handleSearch" />
     <a-button type="primary" @click="handleSearch">搜索</a-button>
+
+
+    <!-- 添加在搜索框下方 -->
+    <select v-model="selectedOption" style="width: 100px;">
+      <option v-for="option in options" :key="option.value" :value="option.value" :label="option.label">
+        {{ option.label }}
+      </option>
+    </select>
+
+
 
 
     <!-- BasicTable -->
@@ -50,8 +61,11 @@
   import { BasicTable, ColumnChangeParam } from '/@/components/Table';
   import { getBasicColumns, getBasicData, getBasicDataByKeyword } from './tableData';
 
+
   export default defineComponent({
-    components: { BasicTable },
+    components: {
+      BasicTable
+    },
     setup() {
       const canResize = ref(false);
       const loading = ref(false);
@@ -167,6 +181,19 @@
         handleInput,
       };
     },
+    data() {
+      return {
+        selectedOption: null,
+        options: [
+          { label: '选项1', value: 'option1' },
+          { label: '选项2', value: 'option2' },
+          { label: '选项3', value: 'option3' },
+        ],
+      };
+    },
 
   });
+
+
+
 </script>
