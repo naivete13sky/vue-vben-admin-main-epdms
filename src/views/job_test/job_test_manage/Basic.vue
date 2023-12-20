@@ -10,7 +10,7 @@
     |
 
     <!--    使用 v-model 的原生事件： 尝试使用@update:modelValue事件替代@input事件。有时候，Vue 3的模板会更喜欢使用@update:modelValue。-->
-    <input v-model.trim="searchKeyword" @update:modelValue="handleInput" @keydown.enter="handleSearch" />
+    <input v-model.trim="searchKeyword" @update:modelValue="handleInput" placeholder="料号ID、料号名称" @keydown.enter="handleSearch" />
     <a-button type="primary" @click="handleSearch">搜索</a-button>
 
 
