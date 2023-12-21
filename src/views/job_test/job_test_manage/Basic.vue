@@ -227,6 +227,21 @@
         }
       };
 
+      async function handleSubmit(values: any) {
+        // console.log('values', values);
+        createMessage.success('click search,values:' + JSON.stringify(values));
+        try {
+          // 在这里你可以调用后端接口进行搜索
+          const result = await getBasicDataByKeyword(values.field2, currentPage.value, pageSize);
+          datacc.value = result.arr;
+          record_count.value = result.record_count;
+          totalPages.value = Math.ceil(record_count.value / pageSize);
+        } catch (error) {
+          console.error('Error handling search:', error);
+          // 处理错误，例如返回默认值或抛出自定义错误
+        }
+      };
+
 
       return {
         columns: getBasicColumns(),
@@ -259,10 +274,7 @@
         handleReset: () => {
           keyword.value = '';
         },
-        handleSubmit: (values: any) => {
-          console.log('values', values);
-          createMessage.success('click search,values:' + JSON.stringify(values));
-        },
+        handleSubmit,
       };
     },
 

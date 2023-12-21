@@ -498,6 +498,7 @@ export async function getBasicData(currentPage,pageSize) {
 }
 
 export async function getBasicDataByKeyword(keyword: string, currentPage: number, pageSize: number) {
+  // console.log("keyword2:",keyword)
   try {
     const url = 'http://10.97.80.119:8000/eptest/api/jobForTests/';
     const params = {
