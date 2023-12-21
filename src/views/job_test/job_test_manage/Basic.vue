@@ -18,7 +18,7 @@
         autoFocusFirstItem
         :labelWidth="200"
         :schemas="schemas"
-        :actionColOptions="{ span: 24 }"
+        :actionColOptions="{ span: 3 }"
         @submit="handleSubmit"
         @reset="handleReset"
       >
@@ -82,17 +82,17 @@
     {
       field: 'field2',
       component: 'Input',
-      label: '带后缀',
-      defaultValue: '111',
+      label: '',
+      defaultValue: '',
       colProps: {
-        span: 8,
+        span: 3,
       },
       componentProps: {
         onChange: (e: any) => {
           console.log(e);
         },
       },
-      suffix: '天',
+      suffix: '',
     },
   ];
 
@@ -226,9 +226,6 @@
           // 处理错误，例如返回默认值或抛出自定义错误
         }
       };
-
-
-
 
 
       return {
