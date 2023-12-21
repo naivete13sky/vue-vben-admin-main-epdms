@@ -32,6 +32,14 @@ const comp: AppRouteModule = {
       },
     },
     {
+      path: 'basic_form',
+      name: 'basic_form',
+      component: () => import('/@/views/job_test/job_test_manage/basic_form.vue'),
+      meta: {
+        title: t('basic_form'),
+      },
+    },
+    {
       path: 'basic',
       name: 'BasicDemo',
       component: () => import('/@/views/demo/job/button/index.vue'),

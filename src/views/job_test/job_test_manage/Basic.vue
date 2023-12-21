@@ -14,7 +14,16 @@
     <a-button type="primary" @click="handleSearch">搜索</a-button>
 
 
+    <BasicForm
+        autoFocusFirstItem
+        :labelWidth="200"
+        :schemas="schemas"
+        :actionColOptions="{ span: 24 }"
+        @submit="handleSubmit"
+        @reset="handleReset"
+      >
 
+    </BasicForm>
 
 
 
@@ -64,12 +73,51 @@
   import { BasicTable, ColumnChangeParam } from '/@/components/Table';
   import { getBasicColumns, getBasicData, getBasicDataByKeyword,getBasicDataOptions } from './tableData';
 
+  import { computed, unref } from 'vue';
+  import { BasicForm, FormSchema } from '/@/components/Form/index';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useDebounceFn } from '@vueuse/core';
+
+  const schemas: FormSchema[] = [
+    {
+      field: 'field2',
+      component: 'Input',
+      label: '带后缀',
+      defaultValue: '111',
+      colProps: {
+        span: 8,
+      },
+      componentProps: {
+        onChange: (e: any) => {
+          console.log(e);
+        },
+      },
+      suffix: '天',
+    },
+  ];
+
 
   export default defineComponent({
     components: {
-      BasicTable
+      BasicTable,
+      BasicForm,
     },
     setup() {
+
+      const { createMessage } = useMessage();
+      const keyword = ref<string>('');
+      const searchParams = computed<Recordable>(() => {
+        return { keyword: unref(keyword) };
+      });
+
+      function onSearch(value: string) {
+        keyword.value = value;
+      }
+
+
+
+
+
       const canResize = ref(false);
       const loading = ref(false);
       const striped = ref(true);
@@ -208,6 +256,16 @@
         data_options_file_type,
         selectedOption,
         options,
+        schemas,
+        onSearch: useDebounceFn(onSearch, 300),
+        searchParams,
+        handleReset: () => {
+          keyword.value = '';
+        },
+        handleSubmit: (values: any) => {
+          console.log('values', values);
+          createMessage.success('click search,values:' + JSON.stringify(values));
+        },
       };
     },
 
