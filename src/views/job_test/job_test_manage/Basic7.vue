@@ -9,6 +9,10 @@
 
     |
 
+    <!--    使用 v-model 的原生事件： 尝试使用@update:modelValue事件替代@input事件。有时候，Vue 3的模板会更喜欢使用@update:modelValue。-->
+    <input v-model.trim="searchKeyword" @update:modelValue="handleInput" placeholder="料号ID、料号名称" @keydown.enter="handleSearch" />
+    <a-button type="primary" @click="handleSearch">搜索</a-button>
+
 
     <BasicForm
         autoFocusFirstItem
@@ -74,7 +78,23 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useDebounceFn } from '@vueuse/core';
 
-
+  const schemas: FormSchema[] = [
+    {
+      field: 'field2',
+      component: 'Input',
+      label: '',
+      defaultValue: '',
+      colProps: {
+        span: 3,
+      },
+      componentProps: {
+        onChange: (e: any) => {
+          console.log(e);
+        },
+      },
+      suffix: '',
+    },
+  ];
 
 
   export default defineComponent({
@@ -95,36 +115,7 @@
       }
 
 
-      const inputValue = ref('');  // 存储输入框的值
-      const schemas: FormSchema[] = [
-        {
-          field: 'field2',
-          component: 'Input',
-          label: '',
-          defaultValue: '',
-          colProps: {
-            span: 3,
-          },
-          componentProps: {
-            onChange: (e: any) => {
-              console.log(e);
-              inputValue.value = e;
-            },
-            value: inputValue,
-            // 添加事件监听
-            onKeydown: (e: KeyboardEvent) => {
-              if (e.key === 'Enter') {
-                handleEnterSearch(event);
-              }
-            },
-          },
-          suffix: '',
-        },
-      ];
 
-      async function handleEnterSearch(event) {
-        await handleSubmit({ field2: event.target.value });
-      }
 
 
       const canResize = ref(false);
@@ -218,9 +209,23 @@
 
 
 
+      const searchKeyword = ref(""); // 用于存储搜索关键字
 
+      async function handleSearch() {
+        try {
 
+          // console.log("Search Keyword:", searchKeyword.value); // 添加这行进行调试
 
+          // 在这里你可以调用后端接口进行搜索
+          const result = await getBasicDataByKeyword(searchKeyword.value, currentPage.value, pageSize);
+          datacc.value = result.arr;
+          record_count.value = result.record_count;
+          totalPages.value = Math.ceil(record_count.value / pageSize);
+        } catch (error) {
+          console.error('Error handling search:', error);
+          // 处理错误，例如返回默认值或抛出自定义错误
+        }
+      };
 
       async function handleSubmit(values: any) {
         // console.log('values', values);
@@ -257,6 +262,8 @@
         inputPage: "", // 新增的输入框绑定的数据
         goToPage,
         jumpToPage,
+        searchKeyword,
+        handleSearch,
         handleInput,
         data_options_file_type,
         selectedOption,
@@ -268,8 +275,6 @@
           keyword.value = '';
         },
         handleSubmit,
-        handleSubmitforInput,
-
       };
     },
 
