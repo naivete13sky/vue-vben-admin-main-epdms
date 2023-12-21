@@ -112,9 +112,9 @@
             },
             value: inputValue,
             // 添加事件监听
-            onKeydown: (e: KeyboardEvent) => {
+            onKeydown: function(e) {
               if (e.key === 'Enter') {
-                handleEnterSearch(event);
+                handleEnterSearch(e);
               }
             },
           },
