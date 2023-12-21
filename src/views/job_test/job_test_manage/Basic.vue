@@ -268,7 +268,6 @@
           keyword.value = '';
         },
         handleSubmit,
-        handleSubmitforInput,
 
       };
     },
