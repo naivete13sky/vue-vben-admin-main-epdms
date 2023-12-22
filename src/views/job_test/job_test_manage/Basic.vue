@@ -82,6 +82,7 @@
       const options_file_type = ref([]);  // 存储文件类型下拉列表框的值
       const options_status = ref([]);  // 存储状态下拉列表框的值
 
+
       // 搜索表单中的控件
       const schemas: FormSchema[] = [
         {
@@ -109,6 +110,30 @@
           },
         },
         {
+          field: 'author',
+          component: 'Input',
+          label: '',
+          defaultValue: '',
+          colProps: {
+            span: 2,
+          },
+          componentProps: {
+            onChange: (e: any) => {
+              console.log(e);
+              inputSearchValue.value = e;
+            },
+            value: inputSearchValue,
+            // 添加事件监听
+            onKeydown: function(e) {
+              if (e.key === 'Enter') {
+                handleEnterSearch(e);
+              }
+            },
+            placeholder: '负责人',
+          },
+          suffix: '',
+        },
+        {
           field: 'field2',
           component: 'Input',
           label: '',
@@ -128,6 +153,7 @@
                 handleEnterSearch(e);
               }
             },
+            placeholder: '料号ID、料号名称',
           },
           suffix: '',
         },
@@ -177,8 +203,6 @@
       const data_options_status = ref([]);
 
 
-
-
       // 挂载，在组件挂载后进行异步操作
       onMounted(async () => {
         // 在组件挂载后进行异步操作
@@ -189,37 +213,31 @@
 
         const result_options = await getBasicDataOptions();
         data_options.value = result_options.data; // 更新数据
-        // console.log("data_options:", data_options.value);
+        console.log("data_options:", data_options.value);
         data_options_file_type.value = data_options.value.actions.POST.file_type.choices
         // console.log("data_options_file_type:", data_options_file_type.value);
         data_options_status.value = data_options.value.actions.POST.status.choices
 
-        // 将选项添加到options_file_type
-        for (const key in data_options_file_type.value) {
-          if (data_options_file_type.value.hasOwnProperty(key)) {
-            const option = data_options_file_type.value[key];
-            options_file_type.value.push({
-              label: option.display_name,
-              value: option.value,
-              key: key, // 添加key属性
-            });
-          }
-        }
+        setOptions(data_options_file_type,options_file_type);
+        setOptions(data_options_status,options_status);
 
-        // 将选项添加到options_status
-        for (const key in data_options_status.value) {
-          if (data_options_status.value.hasOwnProperty(key)) {
-            const option = data_options_status.value[key];
-            options_status.value.push({
-              label: option.display_name,
-              value: option.value,
-              key: key, // 添加key属性
-            });
-          }
-        }
 
 
       });
+
+      async function setOptions(data_options_ref,options) {
+        for (const key in data_options_ref.value) {
+          if (data_options_ref.value.hasOwnProperty(key)) {
+            const option = data_options_ref.value[key];
+            options.value.push({
+              label: option.display_name,
+              value: option.value,
+              key: key, // 添加key属性
+            });
+          }
+        }
+
+      };
 
       // 跳转到某页
       async function goToPage(page) {
@@ -254,7 +272,7 @@
           // 在这里你可以调用后端接口进行搜索
           const selectedValue = values.field4; // 文件类型
           console.log("file_type:",selectedValue)
-          const result = await getBasicDataByKeyword(values.file_type,values.status,'',values.field2, currentPage.value, pageSize);
+          const result = await getBasicDataByKeyword(values.file_type,values.status,values.author,values.field2, currentPage.value, pageSize);
           datacc.value = result.arr;
           record_count.value = result.record_count;
           totalPages.value = Math.ceil(record_count.value / pageSize);
