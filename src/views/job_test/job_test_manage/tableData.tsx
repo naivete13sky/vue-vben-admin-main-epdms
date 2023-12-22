@@ -488,7 +488,7 @@ export async function getBasicData(currentPage,pageSize) {
       remark: `${item.remark}`,
     }));
 
-    console.log("getBasicDatacc3, arr:", arr);
+    // console.log("getBasicDatacc3, arr:", arr);
     return {arr,record_count};
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -497,14 +497,15 @@ export async function getBasicData(currentPage,pageSize) {
   }
 }
 
-export async function getBasicDataByKeyword(file_type,author,search_keyword: string, currentPage: number, pageSize: number) {
-  console.log("keyword2:",search_keyword)
+export async function getBasicDataByKeyword(file_type,status,author,search_keyword: string, currentPage: number, pageSize: number) {
+  // console.log("keyword2:",search_keyword)
   try {
     const url = 'http://10.97.80.119:8000/eptest/api/jobForTests/';
     const params = {
       page: currentPage,
       per_page: pageSize,
       file_type: file_type,  //文件类型
+      status:status, // 状态
       author: author,  //author id
       search: search_keyword, // 添加搜索关键字参数
 
@@ -550,7 +551,7 @@ export async function getBasicDataOptions() {
 
 
 
-    console.log("data, arr:", data);
+    // console.log("data, arr:", data);
     return {data};
   } catch (error) {
     console.error('Error fetching data:', error);

@@ -1,6 +1,7 @@
 <template>
   <div class="p-4">
     <!-- 筛选 -->
+
     <BasicForm
         autoFocusFirstItem
         :labelWidth="200"
@@ -11,6 +12,9 @@
       >
 
     </BasicForm>
+
+
+
 
     <!-- BasicTable -->
     <BasicTable
@@ -56,10 +60,13 @@
   import { defineComponent, ref, onMounted, toRaw } from 'vue';
   import { BasicTable, ColumnChangeParam } from '/@/components/Table';
   import { getBasicColumns, getBasicData, getBasicDataByKeyword,getBasicDataOptions } from './tableData';
+
   import { computed, unref } from 'vue';
   import { BasicForm, FormSchema } from '/@/components/Form/index';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useDebounceFn } from '@vueuse/core';
+
+
 
 
   export default defineComponent({
@@ -68,7 +75,8 @@
       BasicForm,
     },
     setup() {
-      const { createMessage } = useMessage();  // vue 消息系统
+
+      const { createMessage } = useMessage();
       const keyword = ref<string>('');
       const searchParams = computed<Recordable>(() => {
         return { keyword: unref(keyword) };
@@ -78,35 +86,24 @@
         keyword.value = value;
       }
 
-      const inputSearchValue = ref('');  // 存储搜索输入框的值
-      const options_file_type = ref([]);  // 存储文件类型下拉列表框的值
-      const options_status = ref([]);  // 存储状态下拉列表框的值
 
-      // 搜索表单中的控件
+      const inputValue = ref('');  // 存储输入框的值
+      const options = ref([]);
+      const selectedOption = ref(null);
+
       const schemas: FormSchema[] = [
         {
-          field: 'file_type',  // 下拉列表框，文件类型
+          field: 'field4',
           component: 'Select',
           label: '',
           colProps: {
-            span: 2,  // 宽度
+            span: 2,
           },
           componentProps: {
-            options: options_file_type.value,
+            options: options.value,
             placeholder: '文件类型',
           },
-        },
-        {
-          field: 'status',  // 下拉列表框，料号状态
-          component: 'Select',
-          label: '',
-          colProps: {
-            span: 2,  // 宽度
-          },
-          componentProps: {
-            options: options_status.value,
-            placeholder: '状态',
-          },
+          modelValue: selectedOption, // Bind the v-model to selectedOption
         },
         {
           field: 'field2',
@@ -119,9 +116,9 @@
           componentProps: {
             onChange: (e: any) => {
               console.log(e);
-              inputSearchValue.value = e;
+              inputValue.value = e;
             },
-            value: inputSearchValue,
+            value: inputValue,
             // 添加事件监听
             onKeydown: function(e) {
               if (e.key === 'Enter') {
@@ -170,11 +167,8 @@
       const totalPages = ref(0);
       let currentPage = ref(1);
       const pageSize = 10;
-
-      // 获取Django drf框架中接口的options信息
       const data_options = ref([]);
       const data_options_file_type = ref([]);
-      const data_options_status = ref([]);
 
 
 
@@ -190,34 +184,22 @@
         const result_options = await getBasicDataOptions();
         data_options.value = result_options.data; // 更新数据
         // console.log("data_options:", data_options.value);
+        // alert(data_options.value.actions.POST.file_type.choices);
         data_options_file_type.value = data_options.value.actions.POST.file_type.choices
         // console.log("data_options_file_type:", data_options_file_type.value);
-        data_options_status.value = data_options.value.actions.POST.status.choices
 
-        // 将选项添加到options_file_type
+        // 将选项添加到 this.options
         for (const key in data_options_file_type.value) {
           if (data_options_file_type.value.hasOwnProperty(key)) {
             const option = data_options_file_type.value[key];
-            options_file_type.value.push({
+            options.value.push({
               label: option.display_name,
               value: option.value,
               key: key, // 添加key属性
             });
           }
         }
-
-        // 将选项添加到options_status
-        for (const key in data_options_status.value) {
-          if (data_options_status.value.hasOwnProperty(key)) {
-            const option = data_options_status.value[key];
-            options_status.value.push({
-              label: option.display_name,
-              value: option.value,
-              key: key, // 添加key属性
-            });
-          }
-        }
-
+        // console.log("options:", options.value);
 
       });
 
@@ -240,13 +222,19 @@
         }
       };
 
+
       // 新增方法，处理输入框输入变化
       async function handleInput() {
         // 在这里你可以添加一些逻辑，比如限制只能输入数字等
         // 例如：this.inputPage = this.inputPage.replace(/[^\d]/g, "");
       };
 
-      // 查询操作
+
+
+
+
+
+
       async function handleSubmit(values: any) {
         // console.log('values', values);
         createMessage.success('click search,values:' + JSON.stringify(values));
@@ -254,7 +242,7 @@
           // 在这里你可以调用后端接口进行搜索
           const selectedValue = values.field4; // 文件类型
           console.log("file_type:",selectedValue)
-          const result = await getBasicDataByKeyword(values.file_type,values.status,'',values.field2, currentPage.value, pageSize);
+          const result = await getBasicDataByKeyword(values.field4,'',values.field2, currentPage.value, pageSize);
           datacc.value = result.arr;
           record_count.value = result.record_count;
           totalPages.value = Math.ceil(record_count.value / pageSize);
@@ -263,8 +251,6 @@
           // 处理错误，例如返回默认值或抛出自定义错误
         }
       };
-
-
 
 
       return {
@@ -288,7 +274,8 @@
         jumpToPage,
         handleInput,
         data_options_file_type,
-        options_file_type,  // 文件类型
+        selectedOption,
+        options,
         schemas,
         onSearch: useDebounceFn(onSearch, 300),
         searchParams,
