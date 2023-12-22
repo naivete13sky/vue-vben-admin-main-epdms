@@ -95,12 +95,13 @@
         {
           field: 'field4',
           component: 'Select',
-          label: '字段4',
+          label: '',
           colProps: {
-            span: 5,
+            span: 2,
           },
           componentProps: {
             options: options.value,
+            placeholder: '文件类型',
           },
         },
         {
