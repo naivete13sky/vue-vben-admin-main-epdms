@@ -42,7 +42,7 @@ export function getBasicColumns(): BasicColumn[] {
     {
       title: '文件类型',
       dataIndex: 'file_type',
-      width: 150,
+      width: 100,
     },
     {
       title: '模块',
@@ -482,7 +482,8 @@ export async function getBasicData(currentPage,pageSize) {
       test_usage_for_epcam_module:`${item.test_usage_for_epcam_module}`,
       standard_odb:`${item.standard_odb}`,
       vs_result_g:`${item.vs_result_g}`,
-      status:`${item.status}`,
+      // status:`${item.status}`,
+      status: item.status === 'published' ? '正式' : item.status === 'draft' ? '草稿' : `${item.status}`,
       author:`${item.author}`,
       updated: `${item.updated}`,
       remark: `${item.remark}`,
@@ -524,7 +525,8 @@ export async function getBasicDataByKeyword(file_type,status,author,search_keywo
       test_usage_for_epcam_module: `${item.test_usage_for_epcam_module}`,
       standard_odb: `${item.standard_odb}`,
       vs_result_g: `${item.vs_result_g}`,
-      status: `${item.status}`,
+      // status:`${item.status}`,
+      status: item.status === 'published' ? '正式' : item.status === 'draft' ? '草稿' : `${item.status}`,
       author: `${item.author}`,
       updated: `${item.updated}`,
       remark: `${item.remark}`,

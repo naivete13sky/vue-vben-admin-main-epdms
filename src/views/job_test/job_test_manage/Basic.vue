@@ -204,13 +204,8 @@
 
 
       // 挂载，在组件挂载后进行异步操作
-      onMounted(async () => {
+      onMounted(async (values: any) => {
         // 在组件挂载后进行异步操作
-        const result = await getBasicData(currentPage.value,pageSize);
-        datacc.value = result.arr; // 更新数据
-        record_count.value = result.record_count;
-        totalPages.value = Math.ceil(record_count.value / pageSize);
-
         const result_options = await getBasicDataOptions();
         data_options.value = result_options.data; // 更新数据
         console.log("data_options:", data_options.value);
@@ -220,6 +215,15 @@
 
         setOptions(data_options_file_type,options_file_type);
         setOptions(data_options_status,options_status);
+
+        // console.log("options_status:",options_status)
+
+
+        const result = await getBasicData(currentPage.value,pageSize);
+        // const result = await getBasicDataByKeyword(values.file_type,values.status,values.author,values.field2, currentPage.value, pageSize);
+        datacc.value = result.arr; // 更新数据
+        record_count.value = result.record_count;
+        totalPages.value = Math.ceil(record_count.value / pageSize);
 
 
 
