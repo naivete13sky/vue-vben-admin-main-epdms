@@ -89,8 +89,8 @@
 
       const inputValue = ref('');  // 存储输入框的值
       const options = ref([]);
-      // const options = [];  // 使用 const 声明一个普通数组，而不是 ref([])
-      // console.log("options:",options)
+      const selectedOption = ref(null);
+
       const schemas: FormSchema[] = [
         {
           field: 'field4',
@@ -103,6 +103,7 @@
             options: options.value,
             placeholder: '文件类型',
           },
+          modelValue: selectedOption, // Bind the v-model to selectedOption
         },
         {
           field: 'field2',
@@ -168,7 +169,7 @@
       const pageSize = 10;
       const data_options = ref([]);
       const data_options_file_type = ref([]);
-      const selectedOption = ref(null);
+
 
 
 
@@ -198,13 +199,7 @@
             });
           }
         }
-        console.log("options:", options.value);
-        // 使用 toRaw 获取非响应式对象
-        // options.value = toRaw(options.value);
-        // console.log("options2:", options.value);
-        // 使用深度克隆获取非响应式数组
-        // options.value = JSON.parse(JSON.stringify(options.value));
-        // console.log("options2:", options.value);
+        // console.log("options:", options.value);
 
       });
 
@@ -245,7 +240,9 @@
         createMessage.success('click search,values:' + JSON.stringify(values));
         try {
           // 在这里你可以调用后端接口进行搜索
-          const result = await getBasicDataByKeyword(values.field2, currentPage.value, pageSize);
+          const selectedValue = values.field4; // 文件类型
+          console.log("file_type:",selectedValue)
+          const result = await getBasicDataByKeyword(values.field4,'',values.field2, currentPage.value, pageSize);
           datacc.value = result.arr;
           record_count.value = result.record_count;
           totalPages.value = Math.ceil(record_count.value / pageSize);

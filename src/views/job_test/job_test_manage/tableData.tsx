@@ -497,14 +497,17 @@ export async function getBasicData(currentPage,pageSize) {
   }
 }
 
-export async function getBasicDataByKeyword(keyword: string, currentPage: number, pageSize: number) {
-  console.log("keyword2:",keyword)
+export async function getBasicDataByKeyword(file_type,author,search_keyword: string, currentPage: number, pageSize: number) {
+  console.log("keyword2:",search_keyword)
   try {
     const url = 'http://10.97.80.119:8000/eptest/api/jobForTests/';
     const params = {
       page: currentPage,
       per_page: pageSize,
-      search: keyword, // 添加搜索关键字参数
+      file_type: file_type,  //文件类型
+      author: author,  //author id
+      search: search_keyword, // 添加搜索关键字参数
+
     };
 
     const response = await axios.get(url, { params });
