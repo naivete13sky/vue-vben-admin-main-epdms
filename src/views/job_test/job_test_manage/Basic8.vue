@@ -1,6 +1,14 @@
 <template>
   <div class="p-4">
     <!-- 筛选 -->
+    <select v-model="selectedOption" style="width: 100px;">
+      <option v-for="option in options" :key="option.value" :value="option.value" :label="option.label">
+        {{ option.label }}
+      </option>
+    </select>
+
+    |
+
 
     <BasicForm
         autoFocusFirstItem
@@ -57,7 +65,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, onMounted, toRaw } from 'vue';
+  import { defineComponent, ref, onMounted} from 'vue';
   import { BasicTable, ColumnChangeParam } from '/@/components/Table';
   import { getBasicColumns, getBasicData, getBasicDataByKeyword,getBasicDataOptions } from './tableData';
 
@@ -88,21 +96,7 @@
 
 
       const inputValue = ref('');  // 存储输入框的值
-      const options = ref([]);
-      // const options = [];  // 使用 const 声明一个普通数组，而不是 ref([])
-      // console.log("options:",options)
       const schemas: FormSchema[] = [
-        {
-          field: 'field4',
-          component: 'Select',
-          label: '字段4',
-          colProps: {
-            span: 5,
-          },
-          componentProps: {
-            options: options.value,
-          },
-        },
         {
           field: 'field2',
           component: 'Input',
@@ -168,7 +162,7 @@
       const data_options = ref([]);
       const data_options_file_type = ref([]);
       const selectedOption = ref(null);
-
+      const options = ref([]);
 
 
       // 挂载，在组件挂载后进行异步操作
@@ -180,31 +174,20 @@
         totalPages.value = Math.ceil(record_count.value / pageSize);
 
         const result_options = await getBasicDataOptions();
-        data_options.value = result_options.data; // 更新数据
-        // console.log("data_options:", data_options.value);
-        // alert(data_options.value.actions.POST.file_type.choices);
-        data_options_file_type.value = data_options.value.actions.POST.file_type.choices
+        data_options.vlaue = result_options.data; // 更新数据
+        // console.log("data_options:", data_options.vlaue);
+        // alert(data_options.vlaue.actions.POST.file_type.choices);
+        data_options_file_type.value = data_options.vlaue.actions.POST.file_type.choices
         // console.log("data_options_file_type:", data_options_file_type.value);
 
         // 将选项添加到 this.options
+        // console.log("data_options_file_type2:", data_options_file_type.value);
         for (const key in data_options_file_type.value) {
           if (data_options_file_type.value.hasOwnProperty(key)) {
             const option = data_options_file_type.value[key];
-            options.value.push({
-              label: option.display_name,
-              value: option.value,
-              key: key, // 添加key属性
-            });
+            options.value.push({ label: option.display_name, value: option.value });
           }
         }
-        console.log("options:", options.value);
-        // 使用 toRaw 获取非响应式对象
-        // options.value = toRaw(options.value);
-        // console.log("options2:", options.value);
-        // 使用深度克隆获取非响应式数组
-        // options.value = JSON.parse(JSON.stringify(options.value));
-        // console.log("options2:", options.value);
-
       });
 
       // 跳转到某页

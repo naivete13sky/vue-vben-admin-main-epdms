@@ -21,3 +21,32 @@ async function handleSearch() {
 
 
 
+<select v-model="selectedOption" style="width: 100px;">
+  <option v-for="option in options" :key="option.value" :value="option.value" :label="option.label">
+    {{ option.label }}
+  </option>
+</select>
+
+const result_options = await getBasicDataOptions();
+data_options.vlaue = result_options.data; // 更新数据
+// console.log("data_options:", data_options.vlaue);
+// alert(data_options.vlaue.actions.POST.file_type.choices);
+data_options_file_type.value = data_options.vlaue.actions.POST.file_type.choices
+// console.log("data_options_file_type:", data_options_file_type.value);
+
+// 将选项添加到 this.options
+// console.log("data_options_file_type2:", data_options_file_type.value);
+for (const key in data_options_file_type.value) {
+  if (data_options_file_type.value.hasOwnProperty(key)) {
+    const option = data_options_file_type.value[key];
+    options.value.push({ label: option.display_name, value: option.value });
+  }
+}
+
+
+
+
+
+
+
+
