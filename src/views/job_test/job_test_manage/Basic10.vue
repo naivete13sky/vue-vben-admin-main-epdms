@@ -279,16 +279,10 @@
       };
 
       // 跳转到某页
-      async function goToPage(page,values: any) {
+      async function goToPage(page) {
         if (page >= 1 && page <= totalPages.value && page !== currentPage) {
           this.currentPage = page;
-          const result = await getBasicDataByKeyword(
-            searchParams.value.file_type,
-            searchParams.value.status,
-            searchParams.value.author,
-            searchParams.value.search,
-            currentPage.value,
-            pageSize);
+          const result = await getBasicDataByKeyword('','','','', currentPage.value, pageSize);
           datacc.value = result.arr;
         }
       };
