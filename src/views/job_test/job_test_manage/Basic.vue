@@ -55,7 +55,7 @@
 <script lang="ts">
   import { defineComponent, ref, onMounted, toRaw } from 'vue';
   import { BasicTable, ColumnChangeParam } from '/@/components/Table';
-  import { getBasicColumns, getBasicData, getBasicDataByKeyword,getBasicDataOptions } from './tableData';
+  import { getBasicColumns, getBasicDataByKeyword,getBasicDataOptions } from './tableData';
   import { computed, unref } from 'vue';
   import { BasicForm, FormSchema } from '/@/components/Form/index';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -204,7 +204,7 @@
 
 
       // 挂载，在组件挂载后进行异步操作
-      onMounted(async (values: any) => {
+      onMounted(async () => {
         // 在组件挂载后进行异步操作
         const result_options = await getBasicDataOptions();
         data_options.value = result_options.data; // 更新数据
@@ -219,8 +219,8 @@
         // console.log("options_status:",options_status)
 
 
-        const result = await getBasicData(currentPage.value,pageSize);
-        // const result = await getBasicDataByKeyword(values.file_type,values.status,values.author,values.field2, currentPage.value, pageSize);
+        // const result = await getBasicData(currentPage.value,pageSize);
+        const result = await getBasicDataByKeyword('','','','', currentPage.value, pageSize);
         datacc.value = result.arr; // 更新数据
         record_count.value = result.record_count;
         totalPages.value = Math.ceil(record_count.value / pageSize);
@@ -247,7 +247,7 @@
       async function goToPage(page) {
         if (page >= 1 && page <= totalPages.value && page !== currentPage) {
           this.currentPage = page;
-          const result = await getBasicData(page, pageSize);
+          const result = await getBasicDataByKeyword('','','','', currentPage.value, pageSize);
           datacc.value = result.arr;
         }
       };
@@ -257,7 +257,7 @@
         const targetPage = parseInt(this.inputPage);
         if (targetPage >= 1 && targetPage <= this.totalPages && targetPage !== this.currentPage) {
           this.currentPage = targetPage;
-          const result = await getBasicData(targetPage, pageSize);
+          const result = await getBasicDataByKeyword('','','','', currentPage.value, pageSize);
           datacc.value = result.arr;
         }
       };

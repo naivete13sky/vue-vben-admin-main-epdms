@@ -455,49 +455,6 @@ export const vxeTableFormSchema: VxeFormItemProps[] = [
   },
 ];
 
-export async function getBasicData(currentPage,pageSize) {
-  try {
-    // alert(currentPage);
-    const url = 'http://10.97.80.119:8000/eptest/api/jobForTests/';
-    const params = {
-      page: currentPage,
-      per_page: pageSize,
-    };
-
-    const response = await axios.get(url, { params });
-    const data = response.data.results;
-    const record_count = response.data.count;
-    const next_url = response.data.next;
-    const previous_url = response.data.previous;
-
-    // console.log("data:", data);
-    // console.log("data type:", typeof data);
-
-    const arr = data.map((item, index) => ({
-      id: `${item.id}`,
-      job_parent: `${item.job_parent}`,
-      job_name: `${item.job_name}`,
-      file: `${item.file}`,
-      file_type: `${item.file_type}`,
-      test_usage_for_epcam_module:`${item.test_usage_for_epcam_module}`,
-      standard_odb:`${item.standard_odb}`,
-      vs_result_g:`${item.vs_result_g}`,
-      // status:`${item.status}`,
-      status: item.status === 'published' ? '正式' : item.status === 'draft' ? '草稿' : `${item.status}`,
-      author:`${item.author}`,
-      updated: `${item.updated}`,
-      remark: `${item.remark}`,
-    }));
-
-    // console.log("getBasicDatacc3, arr:", arr);
-    return {arr,record_count};
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    // 处理错误，例如返回默认值或抛出自定义错误
-    return [];
-  }
-}
-
 export async function getBasicDataByKeyword(file_type,status,author,search_keyword: string, currentPage: number, pageSize: number) {
   // console.log("keyword2:",search_keyword)
   try {
