@@ -134,7 +134,7 @@
           suffix: '',
         },
         {
-          field: 'field2',
+          field: 'search',
           component: 'Input',
           label: '',
           defaultValue: '',
@@ -153,14 +153,14 @@
                 handleEnterSearch(e);
               }
             },
-            placeholder: '料号ID、料号名称',
+            placeholder: '料号ID、料号名称、标签',
           },
           suffix: '',
         },
       ];
 
       async function handleEnterSearch(event) {
-        await handleSubmit({ field2: event.target.value });
+        await handleSubmit({ search: event.target.value });
       }
 
 
@@ -276,7 +276,7 @@
           // 在这里你可以调用后端接口进行搜索
           const selectedValue = values.field4; // 文件类型
           console.log("file_type:",selectedValue)
-          const result = await getBasicDataByKeyword(values.file_type,values.status,values.author,values.field2, currentPage.value, pageSize);
+          const result = await getBasicDataByKeyword(values.file_type,values.status,values.author,values.search, currentPage.value, pageSize);
           datacc.value = result.arr;
           record_count.value = result.record_count;
           totalPages.value = Math.ceil(record_count.value / pageSize);

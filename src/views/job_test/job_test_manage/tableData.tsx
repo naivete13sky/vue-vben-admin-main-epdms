@@ -97,6 +97,12 @@ export function getBasicColumns(): BasicColumn[] {
       sorter: true,
       dataIndex: 'remark',
     },
+    {
+      title: '标签',
+      width: 150,
+      sorter: true,
+      dataIndex: 'tags',
+    },
   ];
 }
 
@@ -487,6 +493,7 @@ export async function getBasicDataByKeyword(file_type,status,author,search_keywo
       author: `${item.author}`,
       updated: `${item.updated}`,
       remark: `${item.remark}`,
+      tags: `${item.tags}`,
     }));
 
     return { arr, record_count };
