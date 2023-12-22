@@ -70,12 +70,22 @@
     setup() {
       const { createMessage } = useMessage();  // vue 消息系统
       const keyword = ref<string>('');
-      const searchParams = computed<Recordable>(() => {
-        return { keyword: unref(keyword) };
+      // const searchParams = computed<Recordable>(() => {
+      //   return { keyword: unref(keyword) };
+      // });
+
+      const searchParams = ref({
+        keyword: '',
+        file_type: '',  // 添加file_type字段
+        status: '',  // 添加status字段
+        author: '',  // 添加author字段
       });
 
+
       function onSearch(value: string) {
-        keyword.value = value;
+        // keyword.value = value;
+        searchParams.value.keyword = value;
+
       }
 
       const inputSearchValue = ref('');  // 存储搜索输入框的值
@@ -95,6 +105,9 @@
           componentProps: {
             options: options_file_type.value,
             placeholder: '文件类型',
+            onChange: (value) => {
+              searchParams.value.file_type = value;
+            },
           },
         },
         {
@@ -107,6 +120,9 @@
           componentProps: {
             options: options_status.value,
             placeholder: '状态',
+            onChange: (value) => {
+              searchParams.value.status = value;
+            },
           },
         },
         {
@@ -150,7 +166,15 @@
             // 添加事件监听
             onKeydown: function(e) {
               if (e.key === 'Enter') {
-                handleEnterSearch(e);
+                // handleEnterSearch(e);
+                // 将所有表单的值传递到 handleEnterSearch 中
+                // handleEnterSearch({
+                //   file_type: searchParams.value.file_type,
+                //   status: searchParams.value.status,
+                //   author: searchParams.value.author,
+                //   search: inputSearchValue.value,
+                // });
+                handleEnterSearch(searchParams.value);
               }
             },
             placeholder: '料号ID、料号名称、标签',
@@ -159,9 +183,20 @@
         },
       ];
 
-      async function handleEnterSearch(event) {
-        await handleSubmit({ search: event.target.value });
-      }
+      // 处理输入框回车事件
+      // async function handleEnterSearch(event) {
+      //   await handleSubmit({ search: event.target.value });
+      // };
+
+      async function handleEnterSearch(values: any) {
+        console.log("values.file_type:",values.file_type)
+        await handleSubmit({file_type:values.file_type, search: event.target.value });
+      };
+
+
+
+
+
 
 
       const canResize = ref(false);
@@ -274,8 +309,6 @@
         createMessage.success('click search,values:' + JSON.stringify(values));
         try {
           // 在这里你可以调用后端接口进行搜索
-          const selectedValue = values.field4; // 文件类型
-          console.log("file_type:",selectedValue)
           const result = await getBasicDataByKeyword(values.file_type,values.status,values.author,values.search, currentPage.value, pageSize);
           datacc.value = result.arr;
           record_count.value = result.record_count;
