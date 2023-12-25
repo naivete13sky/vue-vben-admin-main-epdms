@@ -143,12 +143,17 @@
             onChange: (value) => {
               inputSearchValue.value = value;
               searchParams.value.author = value;
+              // console.log("searchParams.value.author:",searchParams.value.author)
+              // searchParams.value.author = value.target._value;
+              // console.log("value:",value);
             },
             value: inputSearchValue,
             // 添加事件监听
             onKeydown: function(e) {
               if (e.key === 'Enter') {
-                handleEnterSearch(e);
+                // handleEnterSearch(e);
+                console.log("searchParams.value.author:",searchParams.value.author)
+                handleEnterSearch(searchParams.value);
               }
             },
             placeholder: '负责人',
@@ -198,7 +203,13 @@
       async function handleEnterSearch(values: any) {
         console.log("values.file_type:",values.file_type)
         // alert(searchParams.value.status);
-        await handleSubmit({file_type:values.file_type,status:values.status, search: event.target.value });
+        console.log("values.author:",values.author.target._value);
+        await handleSubmit(
+          {
+            file_type:values.file_type,
+            status:values.status,
+            author:values.author.target._value,
+            search: event.target.value });
       };
 
 
