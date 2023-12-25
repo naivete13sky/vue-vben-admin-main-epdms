@@ -152,7 +152,7 @@
             onKeydown: function(e) {
               if (e.key === 'Enter') {
                 // handleEnterSearch(e);
-                console.log("searchParams.value.author:",searchParams.value.author)
+                // console.log("searchParams.value.author:",searchParams.value.author)
                 handleEnterSearch(searchParams.value);
               }
             },
@@ -201,15 +201,17 @@
       // };
 
       async function handleEnterSearch(values: any) {
-        console.log("values.file_type:",values.file_type)
+        // console.log("values.file_type:",values.file_type)
         // alert(searchParams.value.status);
-        console.log("values.author:",values.author.target._value);
+        // console.log("values.author:",values.author.target._value);
         await handleSubmit(
           {
             file_type:values.file_type,
             status:values.status,
             author:values.author.target._value,
-            search: event.target.value });
+            search: values.search,
+            // search: event.target.value
+          });
       };
 
 
@@ -304,7 +306,7 @@
           const result = await getBasicDataByKeyword(
             searchParams.value.file_type,
             searchParams.value.status,
-            searchParams.value.author,
+            searchParams.value.author.target._value,
             searchParams.value.search,
             currentPage.value,
             pageSize);
