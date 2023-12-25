@@ -99,6 +99,7 @@
           field: 'file_type',  // 下拉列表框，文件类型
           component: 'Select',
           label: '',
+          defaultValue: '',
           colProps: {
             span: 2,  // 宽度
           },
@@ -179,6 +180,7 @@
                 //   author: searchParams.value.author,
                 //   search: inputSearchValue.value,
                 // });
+                // alert(searchParams.value.status);
                 handleEnterSearch(searchParams.value);
               }
             },
@@ -195,7 +197,8 @@
 
       async function handleEnterSearch(values: any) {
         console.log("values.file_type:",values.file_type)
-        await handleSubmit({file_type:values.file_type, search: event.target.value });
+        // alert(searchParams.value.status);
+        await handleSubmit({file_type:values.file_type,status:values.status, search: event.target.value });
       };
 
 
