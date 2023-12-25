@@ -216,6 +216,9 @@
         // alert(searchParams.value.status);
         // console.log("values.author:",values.author.target._value);
 
+        this.currentPage = 1;
+        alert(this.currentPage);
+
         if (values.author){
           author_value = values.author.target._value;
 
@@ -291,7 +294,7 @@
         // 在组件挂载后进行异步操作
         const result_options = await getBasicDataOptions();
         data_options.value = result_options.data; // 更新数据
-        console.log("data_options:", data_options.value);
+        // console.log("data_options:", data_options.value);
         data_options_file_type.value = data_options.value.actions.POST.file_type.choices
         // console.log("data_options_file_type:", data_options_file_type.value);
         data_options_status.value = data_options.value.actions.POST.status.choices
@@ -349,7 +352,7 @@
           const result = await getBasicDataByKeyword(
             searchParams.value.file_type,
             searchParams.value.status,
-            searchParams.value.author,
+            searchParams.value.author.target._value,
             searchParams.value.search,
             currentPage.value,
             pageSize);
@@ -369,6 +372,7 @@
         createMessage.success('click search,values:' + JSON.stringify(values));
         try {
           // 在这里你可以调用后端接口进行搜索
+          alert(currentPage.value);
           const result = await getBasicDataByKeyword(values.file_type,values.status,values.author,values.search, currentPage.value, pageSize);
           datacc.value = result.arr;
           record_count.value = result.record_count;
