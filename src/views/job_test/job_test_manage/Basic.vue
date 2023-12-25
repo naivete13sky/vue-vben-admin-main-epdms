@@ -114,6 +114,7 @@
           field: 'status',  // 下拉列表框，料号状态
           component: 'Select',
           label: '',
+          defaultValue: '',
           colProps: {
             span: 2,  // 宽度
           },
@@ -134,9 +135,13 @@
             span: 2,
           },
           componentProps: {
-            onChange: (e: any) => {
-              console.log(e);
-              inputSearchValue.value = e;
+            // onChange: (e: any) => {
+            //   console.log(e);
+            //   inputSearchValue.value = e;
+            // },
+            onChange: (value) => {
+              inputSearchValue.value = value;
+              searchParams.value.author = value;
             },
             value: inputSearchValue,
             // 添加事件监听
@@ -279,7 +284,7 @@
       };
 
       // 跳转到某页
-      async function goToPage(page,values: any) {
+      async function goToPage(page) {
         if (page >= 1 && page <= totalPages.value && page !== currentPage) {
           this.currentPage = page;
           const result = await getBasicDataByKeyword(
@@ -298,7 +303,13 @@
         const targetPage = parseInt(this.inputPage);
         if (targetPage >= 1 && targetPage <= this.totalPages && targetPage !== this.currentPage) {
           this.currentPage = targetPage;
-          const result = await getBasicDataByKeyword('','','','', currentPage.value, pageSize);
+          const result = await getBasicDataByKeyword(
+            searchParams.value.file_type,
+            searchParams.value.status,
+            searchParams.value.author,
+            searchParams.value.search,
+            currentPage.value,
+            pageSize);
           datacc.value = result.arr;
         }
       };
