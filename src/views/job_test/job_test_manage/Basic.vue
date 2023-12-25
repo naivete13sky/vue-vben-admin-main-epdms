@@ -93,6 +93,10 @@
       const options_status = ref([]);  // 存储状态下拉列表框的值
 
 
+      let author_value = ref('');
+      let search_value = ref('');
+
+
       // 搜索表单中的控件
       const schemas: FormSchema[] = [
         {
@@ -169,9 +173,16 @@
             span: 3,
           },
           componentProps: {
-            onChange: (e: any) => {
-              console.log(e);
-              inputSearchValue.value = e;
+            // onChange: (e: any) => {
+            //   console.log(e);
+            //   inputSearchValue.value = e;
+            // },
+            onChange: (value) => {
+              inputSearchValue.value = value;
+              searchParams.value.search = value;
+              // console.log("searchParams.value.author:",searchParams.value.author)
+              // searchParams.value.author = value.target._value;
+              // console.log("value:",value);
             },
             value: inputSearchValue,
             // 添加事件监听
@@ -204,12 +215,28 @@
         // console.log("values.file_type:",values.file_type)
         // alert(searchParams.value.status);
         // console.log("values.author:",values.author.target._value);
+
+        if (values.author){
+          author_value = values.author.target._value;
+
+        } else {
+          author_value = '';
+        };
+
+        if (values.search){
+          search_value = values.search.target._value;
+
+        } else {
+          search_value = '';
+        };
+
         await handleSubmit(
           {
             file_type:values.file_type,
             status:values.status,
-            author:values.author.target._value,
-            search: values.search,
+            // author:values.author.target._value,
+            author:author_value,
+            search: search_value,
             // search: event.target.value
           });
       };
