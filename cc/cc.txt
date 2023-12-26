@@ -47,6 +47,10 @@ for (const key in data_options_file_type.value) {
 
 
 
+在 Vue 3 中，setup 函数内部确实可以使用 this 来访问响应式变量，但是这与 Vue 2 的行为不同。在 Vue 3 的 setup 函数内部，this 并不指向组件实例，而是一个代表当前组件的普通 JavaScript 对象。
+在你的代码中，currentPage 是通过 ref 创建的响应式变量，而在 Vue 3 中，访问响应式变量的值需要使用 .value。然而，Vue 3 也允许在 setup 内部使用 this 来访问响应式变量的值，但这是一种行为的例外情况。
+所以，虽然在 Vue 3 中 this.currentPage 是合法的，但为了代码的一致性和清晰性，最好还是使用 currentPage.value 来访问和修改响应式变量的值。这样可以确保你的代码在不同情况下都能正常工作，并且更容易理解。
+
 
 
 
